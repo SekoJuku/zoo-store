@@ -34,11 +34,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    public static final String AUTHORIZATION = "Authorization";
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
-    private final JWTTokenProvider jwtProvider;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -50,23 +48,12 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public ResponseEntity<?> auth(String username, String password) {
-        UserPrincipal user = (UserPrincipal) loadUserByUsername(username);
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            HttpHeaders authorizationHeader = getJwtHeader(user);
-            return new ResponseEntity<>(user, authorizationHeader, HttpStatus.OK);
-        }
-        throw new BadCredentialsException("Username and password incorrect");
-    }
 
-    private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(AUTHORIZATION, jwtProvider.generateToken(userPrincipal, getIp()));
-        return httpHeaders;
-    }
+
+
 
     private String getIp() {
-        return HttpUtils.getIp(RequestContextHolder.currentRequestAttributes());
+        return HttpUtils.getIp(((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest());
     }
 
 

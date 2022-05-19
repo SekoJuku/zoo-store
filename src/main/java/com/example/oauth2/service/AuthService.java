@@ -16,11 +16,17 @@ import com.example.oauth2.repository.AuthProviderRepository;
 import com.example.oauth2.repository.RegistrationConfirmationRepository;
 import com.example.oauth2.repository.RoleRepository;
 import com.example.oauth2.repository.UserRepository;
+import com.example.oauth2.security.JWTTokenProvider;
 import com.example.oauth2.security.SecurityConstants;
+import com.example.oauth2.security.UserPrincipal;
+import com.example.oauth2.util.HttpUtils;
 import com.example.oauth2.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +38,11 @@ import static com.example.oauth2.security.SecurityConstants.LOCAL_AUTH_PROVIDER;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+    public static final String AUTHORIZATION = "Authorization";
     private final UserMapper userMapper;
     private final MailSenderService mailSenderService;
     private final UserService userService;
+    private final JWTTokenProvider jwtProvider;
 
 
     private final UserRepository userRepository;
@@ -143,7 +151,18 @@ public class AuthService {
             .orElseThrow(() -> new NotFoundException("AuthProvider", "name"));
     }
 
-    public ResponseEntity<?> auth(UserLoginDtoRequest request) {
-        return userService.auth(request.getEmail(), request.getPassword());
+    public ResponseEntity<?> auth(String username, String password) {
+        UserPrincipal user = (UserPrincipal) userService.loadUserByUsername(username);
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            HttpHeaders authorizationHeader = getJwtHeader(user);
+            return new ResponseEntity<>(user, authorizationHeader, HttpStatus.OK);
+        }
+        throw new BadCredentialsException("Username and password incorrect");
+    }
+
+    private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(AUTHORIZATION, jwtProvider.generateToken(userPrincipal, HttpUtils.getIp()));
+        return httpHeaders;
     }
 }

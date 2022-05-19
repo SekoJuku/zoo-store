@@ -3,6 +3,7 @@ package com.example.oauth2.security;
 import com.example.oauth2.dto.request.UserLoginDtoRequest;
 import com.example.oauth2.environment.JWTEnvironmentBuilder;
 import com.example.oauth2.exception.domain.UnauthorizedException;
+import com.example.oauth2.util.HttpUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
         UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-        String token = jwtTokenProvider.generateToken(user.getUsername(), request);
+        String token = jwtTokenProvider.generateToken(user, HttpUtils.getIp(request));
         response.setHeader(jwtEnvironmentBuilder.getJWT_TOKEN_HEADER(), token);
     }
 }
