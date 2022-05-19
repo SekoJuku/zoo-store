@@ -2,6 +2,7 @@ package com.example.oauth2.service;
 
 
 import com.example.oauth2.dto.request.AddUserDtoRequest;
+import com.example.oauth2.dto.request.UserLoginDtoRequest;
 import com.example.oauth2.dto.request.UserRegistrationDtoRequest;
 import com.example.oauth2.exception.domain.BadRequestException;
 import com.example.oauth2.exception.domain.NotFoundException;
@@ -19,6 +20,7 @@ import com.example.oauth2.security.SecurityConstants;
 import com.example.oauth2.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -139,5 +141,9 @@ public class AuthService {
     private AuthProvider getAuthProviderByName(String authProviderName) {
         return authProviderRepository.findByName(authProviderName.toLowerCase())
             .orElseThrow(() -> new NotFoundException("AuthProvider", "name"));
+    }
+
+    public ResponseEntity<?> auth(UserLoginDtoRequest request) {
+        return userService.auth(request.getEmail(), request.getPassword());
     }
 }

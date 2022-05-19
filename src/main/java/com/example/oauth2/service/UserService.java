@@ -8,25 +8,37 @@ import com.example.oauth2.exception.domain.UnauthorizedException;
 import com.example.oauth2.model.Role;
 import com.example.oauth2.model.User;
 import com.example.oauth2.repository.UserRepository;
+import com.example.oauth2.security.JWTTokenProvider;
 import com.example.oauth2.security.SecurityConstants;
 import com.example.oauth2.security.UserPrincipal;
+import com.example.oauth2.util.HttpUtils;
 import com.example.oauth2.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
+
+    public static final String AUTHORIZATION = "Authorization";
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final JWTTokenProvider jwtProvider;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -37,6 +49,26 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(e.getLocalizedMessage(), e);
         }
     }
+
+    public ResponseEntity<?> auth(String username, String password) {
+        UserPrincipal user = (UserPrincipal) loadUserByUsername(username);
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            HttpHeaders authorizationHeader = getJwtHeader(user);
+            return new ResponseEntity<>(user, authorizationHeader, HttpStatus.OK);
+        }
+        throw new BadCredentialsException("Username and password incorrect");
+    }
+
+    private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(AUTHORIZATION, jwtProvider.generateToken(userPrincipal, getIp()));
+        return httpHeaders;
+    }
+
+    private String getIp() {
+        return HttpUtils.getIp(RequestContextHolder.currentRequestAttributes());
+    }
+
 
     public UserDetails findUserPrincipleByUserId(Long id) {
         User user = userRepository.findById(id).orElseThrow(UnauthorizedException::new);

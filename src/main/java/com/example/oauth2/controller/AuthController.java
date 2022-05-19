@@ -1,6 +1,7 @@
 package com.example.oauth2.controller;
 
 
+import com.example.oauth2.dto.request.UserLoginDtoRequest;
 import com.example.oauth2.dto.request.UserRegistrationDtoRequest;
 import com.example.oauth2.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,11 @@ public class AuthController {
                                                           @RequestParam("email") String email) {
         authService.confirmRegistration(token, email);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> auth(@RequestBody UserLoginDtoRequest request) {
+        return authService.auth(request);
     }
 
     @PostMapping("/registration")
