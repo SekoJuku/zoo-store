@@ -56,6 +56,20 @@ public class User {
     @Column(columnDefinition = "boolean default false")
     private Boolean locked;
 
+    private String gender;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String phoneNumber;
+
+    private String address;
+
+    private String country;
+
+    private String city;
+
     @PrePersist
     private void prePersist() {
         this.createdTime = LocalDateTime.now();
