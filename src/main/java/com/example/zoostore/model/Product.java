@@ -29,7 +29,7 @@ public class Product {
 
     private String description;
 
-    private File image;
+    private String image;
 
     private Integer quantity;
 
