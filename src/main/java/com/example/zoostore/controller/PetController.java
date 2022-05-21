@@ -25,9 +25,9 @@ public class PetController {
         return petService.addPet(request);
     }
 
-    @GetMapping("/{category}")
-    public List<PetsInfo> getAllPetsByCategory(@PathVariable String category) {
-        return petService.getAllPetsByCategory(category);
+    @GetMapping("/category/{id}")
+    public List<PetsInfo> getAllPetsByCategory(@PathVariable Long id) {
+        return petService.getAllPetsByCategoryId(id);
     }
 
     @DeleteMapping("/{id}")

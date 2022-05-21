@@ -1,9 +1,12 @@
 package com.example.zoostore.service;
 
+import com.example.oauth2.exception.domain.BadRequestException;
 import com.example.oauth2.exception.domain.NotFoundException;
 import com.example.zoostore.dto.request.CreatePetDtoRequest;
+import com.example.zoostore.model.Category;
 import com.example.zoostore.model.PetsInfo;
 import com.example.zoostore.model.Product;
+import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.PetsInfoRepository;
 import com.example.zoostore.repository.ProductRepository;
 import com.example.zoostore.utils.model.PetsInfoUtils;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 public class PetService {
     private final ProductRepository productRepository;
     private final PetsInfoRepository petsInfoRepository;
+    private final CategoryRepository categoryRepository;
 
 
     public List<PetsInfo> getAllPets() {
@@ -61,5 +66,13 @@ public class PetService {
         ProductUtils.ProductDtoToProduct(request, product);
         pet.setProduct(productRepository.save(product));
         return petsInfoRepository.save(pet);
+    }
+
+    public List<PetsInfo> getAllPetsByCategoryId(Long id) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        if (optionalCategory.isEmpty()) {
+            throw new BadRequestException(String.format("Category by this %d is not found!", id));
+        }
+        return getAllPetsByCategory(optionalCategory.get().getName());
     }
 }
