@@ -1,8 +1,6 @@
 package com.example.zoostore.controller;
 
-import com.example.zoostore.service.ProductService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/api/v1/product")
 public class ProductController {
-    private final ProductService productService;
 
 
 }

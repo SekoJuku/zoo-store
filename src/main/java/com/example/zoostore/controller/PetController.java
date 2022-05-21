@@ -1,8 +1,8 @@
 package com.example.zoostore.controller;
 
+import com.example.zoostore.dto.request.CreatePetDtoRequest;
 import com.example.zoostore.model.PetsInfo;
-import com.example.zoostore.model.Product;
-import com.example.zoostore.service.ProductService;
+import com.example.zoostore.service.PetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +13,31 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/v1/pet")
 public class PetController {
-    private final ProductService productService;
+    private final PetService petService;
 
-    @GetMapping()
+    @GetMapping
     public List<PetsInfo> getAllPets() {
-        return productService.getAllPets();
+        return petService.getAllPets();
+    }
+
+    @PostMapping
+    public PetsInfo addPet(@RequestBody CreatePetDtoRequest request) {
+        return petService.addPet(request);
     }
 
     @GetMapping("/{category}")
     public List<PetsInfo> getAllPetsByCategory(@PathVariable String category) {
-        return productService.getAllPetsByCategory(category);
+        return petService.getAllPetsByCategory(category);
     }
 
     @DeleteMapping("/{id}")
     public HttpStatus deletePetById(@PathVariable Long id) {
-        productService.deletePetById(id);
+        petService.deletePetById(id);
         return HttpStatus.OK;
+    }
+
+    @PutMapping("/{id}")
+    public PetsInfo updatePetById(@RequestBody CreatePetDtoRequest request, @PathVariable Long id) {
+        return petService.updatePetById(request, id);
     }
 }
