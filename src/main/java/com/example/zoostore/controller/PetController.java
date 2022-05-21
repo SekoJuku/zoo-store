@@ -4,10 +4,8 @@ import com.example.zoostore.model.PetsInfo;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,11 @@ public class PetController {
     @GetMapping("/{category}")
     public List<PetsInfo> getAllPetsByCategory(@PathVariable String category) {
         return productService.getAllPetsByCategory(category);
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpStatus deletePetById(@PathVariable Long id) {
+        productService.deletePetById(id);
+        return HttpStatus.OK;
     }
 }

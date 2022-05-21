@@ -22,9 +22,8 @@ public class SecurityConstants {
     public static final class PUBLIC_URLS {
         public static final String[] PUBLIC = {
             "/webjars/**",
-            "/api/v1/promo-card/all",
-            "/api/v1/promo-code-company/all",
-            "/api/v1/promo-card/id"
+            "/api/v1/pet",
+            "/api/v1/pet/**"
         };
 
         public static final String[] NON_AUTHENTICATED = {
