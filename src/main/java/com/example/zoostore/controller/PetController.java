@@ -21,7 +21,7 @@ public class PetController {
     }
 
     @PostMapping
-    public PetsInfo addPet(@RequestBody CreatePetDtoRequest request) {
+    public PetsInfo addPet(@ModelAttribute CreatePetDtoRequest request) {
         return petService.addPet(request);
     }
 
@@ -37,7 +37,7 @@ public class PetController {
     }
 
     @PutMapping("/{id}")
-    public PetsInfo updatePetById(@RequestBody CreatePetDtoRequest request, @PathVariable Long id) {
+    public PetsInfo updatePetById(@ModelAttribute CreatePetDtoRequest request, @PathVariable Long id) {
         return petService.updatePetById(request, id);
     }
 }
