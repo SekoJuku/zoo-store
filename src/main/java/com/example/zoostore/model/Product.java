@@ -32,7 +32,7 @@ public class Product {
 
     private String description;
 
-    private String image;
+    private byte[] image;
 
     private Integer quantity;
 
