@@ -42,21 +42,31 @@ public class PetService {
 
     @Transactional
     public void deletePetById(Long id) {
-        if(!productRepository.existsById(id)) {
-            throw new NotFoundException("Pet with id: " + id + " not found");
-        }
+        if(!productRepository.existsById(id))
+            throw new NotFoundException(String.format("Pet with id: %d not found",id));
         petsInfoRepository.deleteByProductId(id);
         productRepository.deleteById(id);
     }
 
     public PetsInfo updatePetById(CreatePetDtoRequest request, Long id) {
-        PetsInfo pet = petsInfoRepository.findByProductId(id);
+        Optional<PetsInfo> oPet = petsInfoRepository.findByProductId(id);
+        if(oPet.isEmpty())
+            throw new BadRequestException(String.format("Pet with id: %d not found", id));
+        PetsInfo pet = oPet.get();
         Product product = pet.getProduct();
         ProductUtils.ProductDtoToProduct(request, product);
+        setCategoryToProduct(request.getCategoryId(), product);
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
         pet.setProduct(product);
         productRepository.save(product);
         return petsInfoRepository.save(pet);
+    }
+
+    private void setCategoryToProduct(Long id, Product product) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        if (optionalCategory.isEmpty())
+            throw new BadRequestException(String.format("Category with id: %d not found",id));
+        product.setCategory(categoryRepository.getById(id));
     }
 
     public PetsInfo addPet(CreatePetDtoRequest request) {
@@ -64,7 +74,8 @@ public class PetService {
         Product product = new Product();
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
         ProductUtils.ProductDtoToProduct(request, product);
-        pet.setProduct(productRepository.save(product));
+        Product savedProduct = productRepository.save(product);
+        pet.setProduct(savedProduct);
         return petsInfoRepository.save(pet);
     }
 
