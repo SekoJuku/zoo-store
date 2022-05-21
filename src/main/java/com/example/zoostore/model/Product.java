@@ -40,8 +40,12 @@ public class Product {
 
     private LocalDateTime updatedTime;
 
+    @PrePersist
+    public void prePersist() {
+        this.setCreatedTime(LocalDateTime.now());
+    }
     @PreUpdate
     public void preUpdate() {
-        this.updatedTime = LocalDateTime.now();
+        this.setUpdatedTime(LocalDateTime.now());
     }
 }
