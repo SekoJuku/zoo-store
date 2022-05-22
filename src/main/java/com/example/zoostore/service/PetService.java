@@ -12,6 +12,8 @@ import com.example.zoostore.repository.ProductRepository;
 import com.example.zoostore.utils.model.PetsInfoUtils;
 import com.example.zoostore.utils.model.ProductUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class PetService {
     private final ProductRepository productRepository;
     private final PetsInfoRepository petsInfoRepository;
@@ -29,15 +32,6 @@ public class PetService {
 
     public List<PetsInfo> getAllPets() {
         return petsInfoRepository.findAll();
-    }
-
-    public List<PetsInfo> getAllPetsByCategory(String category) {
-        return getAllPets()
-                .stream()
-                .filter(
-                        e-> !e.getProduct().getCategory().getName()
-                                .equals(category))
-                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -82,8 +76,14 @@ public class PetService {
     public List<PetsInfo> getAllPetsByCategoryId(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         if (optionalCategory.isEmpty()) {
-            throw new BadRequestException(String.format("Category by this %d is not found!", id));
+            throw new BadRequestException(String.format("Category by: %d is not found!", id));
         }
-        return getAllPetsByCategory(optionalCategory.get().getName());
+        Category category = optionalCategory.get();
+        return getAllPets()
+                .stream()
+                .filter(
+                        e-> e.getProduct().getCategory().getId()
+                                .equals(category.getId()))
+                .collect(Collectors.toList());
     }
 }
