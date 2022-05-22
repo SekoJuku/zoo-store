@@ -11,4 +11,5 @@ public class ImageUtils {
     public static byte[] decompressImage(byte[] data) {
         return Base64.decodeBase64(data);
     }
+
 }

@@ -13,7 +13,6 @@ import com.example.zoostore.utils.model.PetsInfoUtils;
 import com.example.zoostore.utils.model.ProductUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-@Slf4j
+@Log4j2
 public class PetService {
     private final ProductRepository productRepository;
     private final PetsInfoRepository petsInfoRepository;
