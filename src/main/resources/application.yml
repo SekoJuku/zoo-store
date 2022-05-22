@@ -3,12 +3,12 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-#    url: jdbc:postgresql://localhost:5432/zoostore
-#    username: postgres
-#    password: 123
-    url: postgres://qnfkjfkrtbtqsi:eab1f385ba4d7f04866b01d47a1583c79eb12e56fbeaa2402f64c604b19c9b43@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/dad9j59gagk2p7
-    username: qnfkjfkrtbtqsi
-    password: eab1f385ba4d7f04866b01d47a1583c79eb12e56fbeaa2402f64c604b19c9b43
+    url: jdbc:postgresql://localhost:5432/zoostore
+    username: postgres
+    password: 123
+#    url: postgres://qnfkjfkrtbtqsi:eab1f385ba4d7f04866b01d47a1583c79eb12e56fbeaa2402f64c604b19c9b43@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/dad9j59gagk2p7
+#    username: qnfkjfkrtbtqsi
+#    password: eab1f385ba4d7f04866b01d47a1583c79eb12e56fbeaa2402f64c604b19c9b43
   jpa:
     hibernate:
       ddl-auto: update
@@ -39,8 +39,8 @@ spring:
           starttls.enable: true
 
 custom-properties:
-  domain: https://zoo-store.herokuapp.com/
-#  domain: http://localhost:8080
+#  domain: https://zoo-store.herokuapp.com/
+  domain: http://localhost:8080
 
 security:
   token:
