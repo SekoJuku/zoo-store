@@ -43,6 +43,14 @@ public class Product {
 
     private LocalDateTime updatedTime;
 
+    public Product(Category category, String name, Double price, String description, Integer quantity) {
+        this.category = category;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
+    }
+
     @PrePersist
     public void prePersist() {
         this.setCreatedTime(LocalDateTime.now());

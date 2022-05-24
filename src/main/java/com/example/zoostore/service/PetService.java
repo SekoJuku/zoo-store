@@ -66,9 +66,9 @@ public class PetService {
         PetsInfo pet = new PetsInfo();
         Product product = new Product();
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
-        log.info(request.getImage().getName());
-        log.info(request.getImage().getOriginalFilename());
-        log.info(request.getImage().getContentType());
+//        log.info(request.getImage().getName());
+//        log.info(request.getImage().getOriginalFilename());
+//        log.info(request.getImage().getContentType());
         ProductUtils.ProductDtoToProduct(request, product);
         Product savedProduct = productRepository.save(product);
         pet.setProduct(savedProduct);
