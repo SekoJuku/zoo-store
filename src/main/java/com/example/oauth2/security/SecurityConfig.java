@@ -50,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(SecurityConstants.PUBLIC_URLS.PUBLIC).permitAll()
             .antMatchers(SecurityConstants.PUBLIC_URLS.NON_AUTHENTICATED).not().authenticated()
-            .antMatchers(SecurityConstants.PUBLIC_URLS.SWAGGER).permitAll()
             .anyRequest().authenticated()
 
 //                .and()

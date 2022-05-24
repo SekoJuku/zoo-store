@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -32,7 +33,9 @@ public class Product {
 
     private String description;
 
-    private byte[] image;
+//    @OneToMany
+//    @JoinColumn(name = "image_id", referencedColumnName = "id", table = "images")
+//    private List<Image> images;
 
     private Integer quantity;
 

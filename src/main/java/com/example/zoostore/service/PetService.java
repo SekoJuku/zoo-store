@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-@Slf4j
+@Log4j2
 public class PetService {
     private final ProductRepository productRepository;
     private final PetsInfoRepository petsInfoRepository;
@@ -67,6 +67,9 @@ public class PetService {
         PetsInfo pet = new PetsInfo();
         Product product = new Product();
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
+        log.info(request.getImage().getName());
+        log.info(request.getImage().getOriginalFilename());
+        log.info(request.getImage().getContentType());
         ProductUtils.ProductDtoToProduct(request, product);
         Product savedProduct = productRepository.save(product);
         pet.setProduct(savedProduct);
