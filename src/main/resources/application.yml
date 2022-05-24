@@ -1,0 +1,54 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zoostore
+    username: postgres
+    password: 123
+  #    url: postgres://nszciryudjvzcs:4261b0b53b95b93c435c782875a8fc50163bef7c10dfafe76da21a57ddba92af@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/d3j83om791du4v
+  #    username: nszciryudjvzcs
+  #    password: 4261b0b53b95b93c435c782875a8fc50163bef7c10dfafe76da21a57ddba92af
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 422824741850-v7076qld2jlq73egm0302u3og576v4b1.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+#          facebook:
+#            client-id: 1400964657004604
+#            client-secret: 278e2e09f0cc06959c7a26905a00aac5
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    user: ZooStore
+    username: testaccserikzhan@gmail.com
+    password: Zoostore2022
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+
+custom-properties:
+#  domain: https://promo-code-shop-backend.herokuapp.com
+  domain: http://localhost:8080
+
+security:
+  token:
+    prefix: Bearer
+    client-ip: ZooStoreClientIp
+    secret: Ijn!nyw#@e7201cVw32102#5@9lh6TgR7Mb!@#cCEidbeiYUdew
+    issuer: ZooStoreIssuer server
+    audience: ZooStore client
+    expiration-time: 3600000
+    jwt-token-header: token
+    token-cannot-be-verified: token cannot be verified
