@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ClothesDtoResponse {
     private Long id;
+    private Long productId;
 
     private String size;
 
