@@ -11,7 +11,7 @@ public class PetDtoResponse {
     private String name;
     private String description;
     private Double price;
-    private File photo;
+    private File image;
     private Long categoryId;
     private Long groupId;
     private LocalDateTime createdAt;

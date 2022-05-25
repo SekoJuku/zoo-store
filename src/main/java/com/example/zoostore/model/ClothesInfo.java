@@ -22,4 +22,9 @@ public class ClothesInfo {
     private Product product;
 
     private String size;
+
+    public ClothesInfo(Product product, String size) {
+        this.product = product;
+        this.size = size;
+    }
 }
