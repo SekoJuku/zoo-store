@@ -48,6 +48,12 @@ public class PetService {
     }
 
     public PetDtoResponse findPetByProductId(Long id) {
+        Optional<Product> oProduct = productRepository.findById(id);
+
+        if(oProduct.isEmpty()) throw new NotFoundException("Wrong id number");
+
+        Product product = oProduct.get();
+
         PetsInfo petsInfo = petsInfoRepository.findPetsInfosByProductId(id);
 
         return PetsInfoUtils.petsInfoToProductResponse(petsInfo);
