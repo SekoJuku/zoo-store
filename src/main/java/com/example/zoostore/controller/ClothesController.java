@@ -17,12 +17,17 @@ public class ClothesController {
 
     @GetMapping()
     public List<ClothesDtoResponse> getAllClothes() {
-        return clothesService.getAllClothes();
+        return clothesService.getAllClothesResponse();
     }
 
     @GetMapping("/{id}")
-    public ClothesDtoResponse getClothesById(@PathVariable Long id) {
-        return clothesService.getClothesById(id);
+    public ClothesDtoResponse getByProductId(@PathVariable Long id) {
+        return clothesService.getByProductIdResponse(id);
+    }
+
+    @GetMapping("/category/{id}")
+    public List<ClothesDtoResponse> getAllClothesByCategoryIdResponse(@PathVariable Long id) {
+        return clothesService.getAllClothesByCategoryIdResponse(id);
     }
 
     @PostMapping()

@@ -58,7 +58,7 @@ public class PetService {
 
     @Transactional
     public void deletePetById(Long id) {
-        if(!productRepository.existsById(id))
+        if(productRepository.getProductById(id).isEmpty())
             throw new NotFoundException(String.format("Pet with id: %d not found",id));
 
         petsInfoRepository.deleteByProductId(id);

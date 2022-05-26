@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -25,8 +26,12 @@ public class ClothesService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
-    public List<ClothesDtoResponse> getAllClothes() {
-        List<ClothesInfo> list = clothesInfoRepository.findAll();
+    public List<ClothesInfo> getAllClothes() {
+        return clothesInfoRepository.getAllClothes();
+    }
+
+    public List<ClothesDtoResponse> getAllClothesResponse() {
+        List<ClothesInfo> list = getAllClothes();
         List<ClothesDtoResponse> response = new ArrayList<>();
         for(ClothesInfo clothesInfo : list) {
             response.add(ClothesInfoUtil.clothesInfoToProductResponse(clothesInfo));
@@ -34,16 +39,13 @@ public class ClothesService {
         return response;
     }
 
-    public ClothesDtoResponse getClothesById(Long id) {
-        Optional<ClothesInfo> optionalClothesInfo = clothesInfoRepository.findById(id);
+    public ClothesDtoResponse getByProductIdResponse(Long id) {
+        return ClothesInfoUtil.clothesInfoToProductResponse(getByProductId(id));
+    }
 
-        if(optionalClothesInfo.isEmpty()) {
-            throw new NotFoundException("Clothes not found");
-        }
-
-        ClothesInfo clothesInfo = optionalClothesInfo.get();
-
-        return ClothesInfoUtil.clothesInfoToProductResponse(clothesInfo);
+    public ClothesInfo getByProductId(Long id) {
+        return clothesInfoRepository.findByProductId(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Clothes with id: %d not found", id)));
     }
 
     public ClothesDtoResponse addClothes(ClothesDtoRequest request) {
@@ -65,11 +67,21 @@ public class ClothesService {
     }
     @Transactional
     public void deleteClothesById(Long id) {
-        if(!clothesInfoRepository.existsById(id))
+        if(clothesInfoRepository.findByProductId(id).isEmpty())
             throw new NotFoundException(String.format("Clothes with id: %d not found",id));
 
-        Long productId = clothesInfoRepository.getById(id).getProduct().getId();
-        clothesInfoRepository.deleteById(id);
-        productRepository.deleteById(productId);
+        clothesInfoRepository.deleteClothesInfoByProductId(id);
+        productRepository.deleteById(id);
+    }
+
+    public List<ClothesInfo> getAllClothesByCategoryId(Long id) {
+        return clothesInfoRepository.getAllClothesByCategoryId(id);
+    }
+
+    public List<ClothesDtoResponse> getAllClothesByCategoryIdResponse(Long id) {
+        return getAllClothesByCategoryId(id)
+                .stream()
+                .map(ClothesInfoUtil::clothesInfoToProductResponse)
+                .collect(Collectors.toList());
     }
 }

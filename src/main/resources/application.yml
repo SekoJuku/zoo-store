@@ -6,9 +6,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/zoostore
     username: postgres
     password: 123
-#    url: postgres://qnfkjfkrtbtqsi:eab1f385ba4d7f04866b01d47a1583c79eb12e56fbeaa2402f64c604b19c9b43@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/dad9j59gagk2p7
-#    username: qnfkjfkrtbtqsi
-#    password: eab1f385ba4d7f04866b01d47a1583c79eb12e56fbeaa2402f64c604b19c9b43
+  #    url: postgres://nszciryudjvzcs:4261b0b53b95b93c435c782875a8fc50163bef7c10dfafe76da21a57ddba92af@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/d3j83om791du4v
+  #    username: nszciryudjvzcs
+  #    password: 4261b0b53b95b93c435c782875a8fc50163bef7c10dfafe76da21a57ddba92af
   jpa:
     hibernate:
       ddl-auto: update
@@ -39,8 +39,8 @@ spring:
           starttls.enable: true
 
 custom-properties:
-  domain: https://api-zoo-app.herokuapp.com/
-#  domain: http://localhost:8080
+#  domain: https://promo-code-shop-backend.herokuapp.com
+  domain: http://localhost:8080
 
 security:
   token:
