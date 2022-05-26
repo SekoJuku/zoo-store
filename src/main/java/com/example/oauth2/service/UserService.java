@@ -48,10 +48,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-
-
-
-
     private String getIp() {
         return HttpUtils.getIp(((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest());
     }

@@ -52,15 +52,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(SecurityConstants.PUBLIC_URLS.NON_AUTHENTICATED).not().authenticated()
             .anyRequest().authenticated()
 
-//                .and()
-//
-//                .formLogin()
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .failureHandler(((request, response, exception) -> {
-//                    throw new UnauthorizedException();
-//                }))
-//                .successHandler(localAuthenticationSuccessHandler())
+            .and()
+
+            .formLogin()
+            .usernameParameter("email")
+            .passwordParameter("password")
+            .failureHandler(((request, response, exception) -> {
+                throw new UnauthorizedException();
+            }))
+            .successHandler(localAuthenticationSuccessHandler())
 
             .and()
 
@@ -92,13 +92,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring();
     }
 
-//    private AuthenticationSuccessHandler localAuthenticationSuccessHandler() {
-//        return (request, response, authentication) -> {
-//            UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-//            String token = jwtTokenProvider.generateToken(user.getUsername(), request);
-//            response.setHeader(jwtEnvironmentBuilder.getJWT_TOKEN_HEADER(), token);
-//        };
-//    }
+    private AuthenticationSuccessHandler localAuthenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
+            String token = jwtTokenProvider.generateToken(user.getUsername(), request);
+            response.setHeader(jwtEnvironmentBuilder.getJWT_TOKEN_HEADER(), token);
+        };
+    }
 
 
 
