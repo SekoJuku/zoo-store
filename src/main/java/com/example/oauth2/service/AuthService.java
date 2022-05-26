@@ -63,7 +63,6 @@ public class AuthService {
             userRepository.save(registrationConfirmation.getUser());
             return;
         }
-
         throw new BadRequestException("Invalid link");
     }
 
