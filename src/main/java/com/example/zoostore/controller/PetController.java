@@ -21,6 +21,11 @@ public class PetController {
         return petService.getAllPets();
     }
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello!";
+    }
+
     @GetMapping("/{id}")
     public PetDtoResponse findPetByProductId(@PathVariable Long id) {
         return petService.findPetByProductId(id);
