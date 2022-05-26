@@ -74,6 +74,10 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public List<Product> getAllByCategoryId(Long id) {
+        return productRepository.getAllByCategoryId(id);
+    }
+
     private boolean isValidCategory(Category category) {
         return category.getSuperCategory().getId() == 3;
     }
