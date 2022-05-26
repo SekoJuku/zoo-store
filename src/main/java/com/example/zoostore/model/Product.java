@@ -1,16 +1,9 @@
 package com.example.zoostore.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.io.File;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -25,6 +18,7 @@ public class Product {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Category category;
 
     private String name;

@@ -49,7 +49,12 @@ public class ClothesService {
     public ClothesDtoResponse addClothes(ClothesDtoRequest request) {
         Category category = categoryRepository.getById(request.getCategoryId());
 
-        Product product = new Product(category, request.getName(), request.getPrice(), request.getDescription(), request.getQuantity());
+        Product product = new Product(
+                category,
+                request.getName(),
+                request.getPrice(),
+                request.getDescription(),
+                request.getQuantity());
 
         ClothesInfo clothesInfo = new ClothesInfo(product, request.getSize());
 

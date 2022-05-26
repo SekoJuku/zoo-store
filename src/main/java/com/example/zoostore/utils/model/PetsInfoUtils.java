@@ -5,7 +5,9 @@ import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.dto.response.PetDtoResponse;
 import com.example.zoostore.model.ClothesInfo;
 import com.example.zoostore.model.PetsInfo;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class PetsInfoUtils {
     public static void ProductDtoToPetsInfo(CreatePetDtoRequest request, PetsInfo pet) {
         pet.setBreed(request.getBreed() != null ? request.getBreed() : pet.getBreed());

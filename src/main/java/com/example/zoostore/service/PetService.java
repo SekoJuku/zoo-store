@@ -34,11 +34,11 @@ public class PetService {
     private final CategoryRepository categoryRepository;
 
 
-    public List<PetsInfo> getAllPets() {
-        return petsInfoRepository.findAll();
-    }
+//    public List<PetsInfo> getAllPets() {
+//        return petsInfoRepository.findAll();
+//    }
 
-    public List<PetDtoResponse> getAlPets() {
+    public List<PetDtoResponse> getAllPets() {
         List<PetsInfo> list = petsInfoRepository.findAll();
         List<PetDtoResponse> response = new ArrayList<>();
         for(PetsInfo petsInfo : list) {
@@ -46,6 +46,13 @@ public class PetService {
         }
         return response;
     }
+
+    public PetDtoResponse findPetByProductId(Long id) {
+        PetsInfo petsInfo = petsInfoRepository.findPetsInfosByProductId(id);
+
+        return PetsInfoUtils.petsInfoToProductResponse(petsInfo);
+    }
+
 
     @Transactional
     public void deletePetById(Long id) {
@@ -89,17 +96,17 @@ public class PetService {
         return petsInfoRepository.save(pet);
     }
 
-    public List<PetsInfo> getAllPetsByCategoryId(Long id) {
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
-        if (optionalCategory.isEmpty()) {
-            throw new BadRequestException(String.format("Category by: %d is not found!", id));
-        }
-        Category category = optionalCategory.get();
-        return getAllPets()
-                .stream()
-                .filter(
-                        e-> e.getProduct().getCategory().getId()
-                                .equals(category.getId()))
-                .collect(Collectors.toList());
-    }
+//    public List<PetsInfo> getAllPetsByCategoryId(Long id) {
+//        Optional<Category> optionalCategory = categoryRepository.findById(id);
+//        if (optionalCategory.isEmpty()) {
+//            throw new BadRequestException(String.format("Category by: %d is not found!", id));
+//        }
+//        Category category = optionalCategory.get();
+//        return getAllPets()
+//                .stream()
+//                .filter(
+//                        e-> e.getProductId().getCategory().getId()
+//                                .equals(category.getId()))
+//                .collect(Collectors.toList());
+//    }
 }
