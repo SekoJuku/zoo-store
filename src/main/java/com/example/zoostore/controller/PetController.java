@@ -1,6 +1,7 @@
 package com.example.zoostore.controller;
 
 import com.example.zoostore.dto.request.CreatePetDtoRequest;
+import com.example.zoostore.dto.response.PetDtoResponse;
 import com.example.zoostore.model.PetsInfo;
 import com.example.zoostore.service.PetService;
 import lombok.AllArgsConstructor;
@@ -16,8 +17,8 @@ public class PetController {
     private final PetService petService;
 
     @GetMapping
-    public List<PetsInfo> getAllPets() {
-        return petService.getAllPets();
+    public List<PetDtoResponse> getAllPets() {
+        return petService.getAlPets();
     }
 
     @PostMapping

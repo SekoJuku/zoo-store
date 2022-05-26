@@ -5,22 +5,27 @@ import com.example.zoostore.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class PetDtoResponse {
+public class ClothesDtoResponse {
     private Long id;
     private Long productId;
+
+    private String size;
+
     private Long categoryId;
+
     private String name;
+
     private Double price;
+
     private String description;
-    private Boolean gender;
-    private String city;
-    private String ownerNumber;
-    private String breed;
+
+    private Integer quantity;
+
     private LocalDateTime createdTime;
+
     private LocalDateTime updatedTime;
 }

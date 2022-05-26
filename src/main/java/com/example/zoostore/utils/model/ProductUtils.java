@@ -11,7 +11,7 @@ public class ProductUtils {
         product.setName(request.getName() != null ? request.getName() : product.getName());
         product.setQuantity(request.getQuantity() != null ? request.getQuantity() : product.getQuantity());
         product.setDescription(request.getDescription() != null ? request.getDescription() :product.getDescription());
-        product.setImage(request.getImage() != null ? ImageUtils.compressImage(request.getImage().getBytes()) : product.getImage());
+        //product.setImage(request.getImage() != null ? ImageUtils.compressImage(request.getImage().getBytes()) : product.getImage());
         product.setPrice(request.getPrice() != null ? request.getPrice() : product.getPrice());
     }
 }

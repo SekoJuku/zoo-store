@@ -3,12 +3,16 @@ package com.example.zoostore.service;
 import com.example.oauth2.exception.domain.BadRequestException;
 import com.example.oauth2.exception.domain.NotFoundException;
 import com.example.zoostore.dto.request.CreatePetDtoRequest;
+import com.example.zoostore.dto.response.ClothesDtoResponse;
+import com.example.zoostore.dto.response.PetDtoResponse;
 import com.example.zoostore.model.Category;
+import com.example.zoostore.model.ClothesInfo;
 import com.example.zoostore.model.PetsInfo;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.PetsInfoRepository;
 import com.example.zoostore.repository.ProductRepository;
+import com.example.zoostore.utils.model.ClothesInfoUtil;
 import com.example.zoostore.utils.model.PetsInfoUtils;
 import com.example.zoostore.utils.model.ProductUtils;
 import lombok.AllArgsConstructor;
@@ -16,6 +20,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +36,15 @@ public class PetService {
 
     public List<PetsInfo> getAllPets() {
         return petsInfoRepository.findAll();
+    }
+
+    public List<PetDtoResponse> getAlPets() {
+        List<PetsInfo> list = petsInfoRepository.findAll();
+        List<PetDtoResponse> response = new ArrayList<>();
+        for(PetsInfo petsInfo : list) {
+            response.add(PetsInfoUtils.petsInfoToProductResponse(petsInfo));
+        }
+        return response;
     }
 
     @Transactional
@@ -66,6 +80,9 @@ public class PetService {
         PetsInfo pet = new PetsInfo();
         Product product = new Product();
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
+//        log.info(request.getImage().getName());
+//        log.info(request.getImage().getOriginalFilename());
+//        log.info(request.getImage().getContentType());
         ProductUtils.ProductDtoToProduct(request, product);
         Product savedProduct = productRepository.save(product);
         pet.setProduct(savedProduct);

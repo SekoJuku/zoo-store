@@ -21,9 +21,7 @@ public class SecurityConstants {
 
     public static final class PUBLIC_URLS {
         public static final String[] PUBLIC = {
-            "/webjars/**",
-            "/api/v1/pet",
-            "/api/v1/pet/**"
+            "/api/v1/**",
         };
 
         public static final String[] NON_AUTHENTICATED = {
@@ -31,23 +29,23 @@ public class SecurityConstants {
             "/api/v*/auth/**"
         };
 
-        public static final String[] SWAGGER = {
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            // -- Swagger UI v3 (OpenAPI)
-            "/v3/api-docs/**",
-            "/swagger-ui/**"
-        };
+//        public static final String[] SWAGGER = {
+//            "/v2/api-docs",
+//            "/swagger-resources",
+//            "/swagger-resources/**",
+//            "/configuration/ui",
+//            "/configuration/security",
+//            "/swagger-ui.html",
+//            "/webjars/**",
+//            // -- Swagger UI v3 (OpenAPI)
+//            "/v3/api-docs/**",
+//            "/swagger-ui/**"
+//        };
 
         public static boolean contains(String url) {
             return Arrays.asList(PUBLIC).contains(url)
-                || Arrays.asList(NON_AUTHENTICATED).contains(url)
-                || Arrays.asList(SWAGGER).contains(url);
+                || Arrays.asList(NON_AUTHENTICATED).contains(url);
         }
     }
 }
+//|| Arrays.asList(SWAGGER).contains(url

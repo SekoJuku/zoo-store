@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -32,13 +33,23 @@ public class Product {
 
     private String description;
 
-    private byte[] image;
+//    @OneToMany
+//    @JoinColumn(name = "image_id", referencedColumnName = "id", table = "images")
+//    private List<Image> images;
 
     private Integer quantity;
 
     private LocalDateTime createdTime;
 
     private LocalDateTime updatedTime;
+
+    public Product(Category category, String name, Double price, String description, Integer quantity) {
+        this.category = category;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
+    }
 
     @PrePersist
     public void prePersist() {
