@@ -7,15 +7,15 @@ public class SecurityConstants {
     public static final String LOCAL_AUTH_PROVIDER = "local";
 
     public static final class ROLES {
-        public static final String ADMIN = "ADMIN";
-        public static final String USER = "USER";
-        public static final String CONTENT_MANAGER = "CONTENT_MANAGER";
+        public static final String ADMIN = "ROLE_ADMIN";
+        public static final String USER = "ROLE_USER";
+        public static final String CONTENT_MANAGER = "ROLE_MANAGER";
     }
 
     public static class JWT {
         public static final String TOKEN_PREFIX = "Bearer ";
         public static final String SECRET = "89juw2HGSAbw72scD2SSw2!nAdnTwjOI64Se32Cr3t";
-        public static final Long EXPIRATION_TIME = (long) (15 * 60 * 1000);//15 minutes
+        public static final Long EXPIRATION_TIME = (long) (15 * 60 * 1000); // 15 minutes
         public static final String CLIENT_IP = "Client ip";
     }
 
