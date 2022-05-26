@@ -18,12 +18,12 @@ public class PetController {
 
     @GetMapping
     public List<PetDtoResponse> getAllPets() {
-        return petService.getAllPets();
+        return petService.getAllPetsResponse();
     }
 
     @GetMapping("/{id}")
     public PetDtoResponse findPetByProductId(@PathVariable Long id) {
-        return petService.findPetByProductId(id);
+        return petService.findPetByProductIdResponse(id);
     }
 
     @PostMapping
@@ -31,10 +31,10 @@ public class PetController {
         return petService.addPet(request);
     }
 
-//    @GetMapping("/category/{id}")
-//    public List<PetsInfo> getAllPetsByCategory(@PathVariable Long id) {
-//        return petService.getAllPetsByCategoryId(id);
-//    }
+    @GetMapping("/category/{id}")
+    public List<PetDtoResponse> getAllPetsByCategory(@PathVariable Long id) {
+        return petService.getAllPetsByCategoryIdResponse(id);
+    }
 
     @DeleteMapping("/{id}")
     public HttpStatus deletePetById(@PathVariable Long id) {

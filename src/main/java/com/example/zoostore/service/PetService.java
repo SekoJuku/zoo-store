@@ -34,12 +34,12 @@ public class PetService {
     private final CategoryRepository categoryRepository;
 
 
-//    public List<PetsInfo> getAllPets() {
-//        return petsInfoRepository.findAll();
-//    }
+    public List<PetsInfo> getAllPets() {
+        return petsInfoRepository.getAllPets();
+    }
 
-    public List<PetDtoResponse> getAllPets() {
-        List<PetsInfo> list = petsInfoRepository.findAll();
+    public List<PetDtoResponse> getAllPetsResponse() {
+        List<PetsInfo> list = getAllPets();
         List<PetDtoResponse> response = new ArrayList<>();
         for(PetsInfo petsInfo : list) {
             response.add(PetsInfoUtils.petsInfoToProductResponse(petsInfo));
@@ -47,32 +47,27 @@ public class PetService {
         return response;
     }
 
-    public PetDtoResponse findPetByProductId(Long id) {
-        Optional<Product> oProduct = productRepository.findById(id);
-
-        if(oProduct.isEmpty()) throw new NotFoundException("Wrong id number");
-
-        Product product = oProduct.get();
-
-        PetsInfo petsInfo = petsInfoRepository.findPetsInfosByProductId(id);
-
-        return PetsInfoUtils.petsInfoToProductResponse(petsInfo);
+    public PetDtoResponse findPetByProductIdResponse(Long id) {
+        return PetsInfoUtils.petsInfoToProductResponse(findPetByProductId(id));
     }
 
+    public PetsInfo findPetByProductId(Long id) {
+        return petsInfoRepository.findByProductId(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Pet with id: %d not found", id)));
+    }
 
     @Transactional
     public void deletePetById(Long id) {
         if(!productRepository.existsById(id))
             throw new NotFoundException(String.format("Pet with id: %d not found",id));
+
         petsInfoRepository.deleteByProductId(id);
         productRepository.deleteById(id);
     }
 
     public PetsInfo updatePetById(CreatePetDtoRequest request, Long id) {
-        Optional<PetsInfo> oPet = petsInfoRepository.findByProductId(id);
-        if(oPet.isEmpty())
-            throw new BadRequestException(String.format("Pet with id: %d not found", id));
-        PetsInfo pet = oPet.get();
+        PetsInfo pet = findPetByProductId(id);
+
         Product product = pet.getProduct();
         ProductUtils.ProductDtoToProduct(request, product);
         setCategoryToProduct(request.getCategoryId(), product);
@@ -84,8 +79,10 @@ public class PetService {
 
     private void setCategoryToProduct(Long id, Product product) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
+
         if (optionalCategory.isEmpty())
             throw new BadRequestException(String.format("Category with id: %d not found",id));
+
         product.setCategory(categoryRepository.getById(id));
     }
 
@@ -93,26 +90,20 @@ public class PetService {
         PetsInfo pet = new PetsInfo();
         Product product = new Product();
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
-//        log.info(request.getImage().getName());
-//        log.info(request.getImage().getOriginalFilename());
-//        log.info(request.getImage().getContentType());
         ProductUtils.ProductDtoToProduct(request, product);
         Product savedProduct = productRepository.save(product);
         pet.setProduct(savedProduct);
         return petsInfoRepository.save(pet);
     }
 
-//    public List<PetsInfo> getAllPetsByCategoryId(Long id) {
-//        Optional<Category> optionalCategory = categoryRepository.findById(id);
-//        if (optionalCategory.isEmpty()) {
-//            throw new BadRequestException(String.format("Category by: %d is not found!", id));
-//        }
-//        Category category = optionalCategory.get();
-//        return getAllPets()
-//                .stream()
-//                .filter(
-//                        e-> e.getProductId().getCategory().getId()
-//                                .equals(category.getId()))
-//                .collect(Collectors.toList());
-//    }
+    public List<PetsInfo> getAllPetsByCategoryId(Long id) {
+        return petsInfoRepository.getAllPetsByCategoryId(id);
+    }
+
+    public List<PetDtoResponse> getAllPetsByCategoryIdResponse(Long id) {
+        return getAllPetsByCategoryId(id)
+                .stream()
+                .map(PetsInfoUtils::petsInfoToProductResponse)
+                .collect(Collectors.toList());
+    }
 }

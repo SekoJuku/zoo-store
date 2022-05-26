@@ -9,14 +9,19 @@ import java.util.Optional;
 
 public interface PetsInfoRepository extends JpaRepository<PetsInfo, Long> {
     Optional<PetsInfo> findByProductId(Long id);
-    PetsInfo findPetsInfosByProductId(Long id);
 
     void deleteByProductId(Long id);
 
-    @Query(value = "SELECT * FROM pets_info pe" +
-            "INNER JOIN products p on p.id = pe.product_id" +
-            "INNER JOIN categories c on c.id = p.category_id" +
-            "WHERE c.super_category_id = 1",
+    @Query(value = "SELECT * FROM pets_info pe\n" +
+            "INNER JOIN products p on p.id = pe.product_id\n" +
+            "INNER JOIN categories c on c.id = p.category_id\n" +
+            "WHERE c.super_category_id = 1;",
             nativeQuery = true)
-    List<PetsInfo> getALLPets();
+    List<PetsInfo> getAllPets();
+
+    @Query(value = "SELECT * FROM pets_info pe\n" +
+            "INNER JOIN products p on p.id = pe.product_id\n" +
+            "WHERE p.category_id = ?",
+            nativeQuery = true)
+    List<PetsInfo> getAllPetsByCategoryId(Long id);
 }
