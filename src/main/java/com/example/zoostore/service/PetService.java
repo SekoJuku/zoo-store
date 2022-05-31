@@ -90,6 +90,8 @@ public class PetService {
         PetsInfo pet = new PetsInfo();
         Product product = new Product();
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
+        Category category = getCategoryById(request.getCategoryId());
+        product.setCategory(category);
         ProductUtils.ProductDtoToProduct(request, product);
         Product savedProduct = productRepository.save(product);
         pet.setProduct(savedProduct);
@@ -98,6 +100,11 @@ public class PetService {
 
     public List<PetsInfo> getAllPetsByCategoryId(Long id) {
         return petsInfoRepository.getAllPetsByCategoryId(id);
+    }
+
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findById(id)
+            .orElseThrow(() ->  new BadRequestException(String.format("Category with id: %d is not found",id)));
     }
 
     public List<PetDtoResponse> getAllPetsByCategoryIdResponse(Long id) {
