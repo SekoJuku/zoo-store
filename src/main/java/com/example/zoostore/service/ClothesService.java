@@ -38,6 +38,11 @@ public class ClothesService {
         return response;
     }
 
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findById(id)
+            .orElseThrow(()-> new NotFoundException(String.format("Category with id: %d not found",id)));
+    }
+
     public ClothesDtoResponse getByProductIdResponse(Long id) {
         return ClothesInfoUtil.clothesInfoToProductResponse(getByProductId(id));
     }
@@ -48,7 +53,7 @@ public class ClothesService {
     }
 
     public ClothesDtoResponse addClothes(ClothesDtoRequest request) {
-        Category category = categoryRepository.getById(request.getCategoryId());
+        Category category = getCategoryById(request.getCategoryId());
 
         Product product = new Product(
                 category,
