@@ -1,8 +1,8 @@
 package com.example.oauth2.service;
 
 import com.example.oauth2.dto.request.AuthorityDtoRequest;
-import com.example.oauth2.exception.domain.BadRequestException;
-import com.example.oauth2.exception.domain.NotFoundException;
+import com.example.exception.domain.BadRequestException;
+import com.example.exception.domain.NotFoundException;
 import com.example.oauth2.model.Authority;
 import com.example.oauth2.repository.AuthorityRepository;
 import lombok.RequiredArgsConstructor;

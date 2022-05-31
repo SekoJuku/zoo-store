@@ -1,4 +1,4 @@
-package com.example.oauth2.exception.domain;
+package com.example.exception.domain;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException() {

@@ -1,4 +1,4 @@
-package com.example.oauth2.exception.domain;
+package com.example.exception.domain;
 
 public class BadRequestException extends RuntimeException {
     public BadRequestException(String message) {

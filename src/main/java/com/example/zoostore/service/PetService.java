@@ -1,18 +1,15 @@
 package com.example.zoostore.service;
 
-import com.example.oauth2.exception.domain.BadRequestException;
-import com.example.oauth2.exception.domain.NotFoundException;
+import com.example.exception.domain.BadRequestException;
+import com.example.exception.domain.NotFoundException;
 import com.example.zoostore.dto.request.CreatePetDtoRequest;
-import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.dto.response.PetDtoResponse;
 import com.example.zoostore.model.Category;
-import com.example.zoostore.model.ClothesInfo;
 import com.example.zoostore.model.PetsInfo;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.PetsInfoRepository;
 import com.example.zoostore.repository.ProductRepository;
-import com.example.zoostore.utils.model.ClothesInfoUtil;
 import com.example.zoostore.utils.model.PetsInfoUtils;
 import com.example.zoostore.utils.model.ProductUtils;
 import lombok.AllArgsConstructor;
@@ -58,7 +55,7 @@ public class PetService {
 
     @Transactional
     public void deletePetById(Long id) {
-        if(productRepository.getProductById(id).isEmpty())
+        if(productRepository.findProductById(id).isEmpty())
             throw new NotFoundException(String.format("Pet with id: %d not found",id));
 
         petsInfoRepository.deleteByProductId(id);
@@ -81,7 +78,7 @@ public class PetService {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
 
         if (optionalCategory.isEmpty())
-            throw new BadRequestException(String.format("Category with id: %d not found",id));
+            throw new NotFoundException(String.format("Category with id: %d not found",id));
 
         product.setCategory(categoryRepository.getById(id));
     }

@@ -1,7 +1,7 @@
 package com.example.oauth2.service;
 
 import com.example.oauth2.dto.response.RoleDtoResponse;
-import com.example.oauth2.exception.domain.NotFoundException;
+import com.example.exception.domain.NotFoundException;
 import com.example.oauth2.mappers.RoleMapper;
 import com.example.oauth2.model.Role;
 import com.example.oauth2.repository.RoleRepository;

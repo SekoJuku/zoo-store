@@ -1,9 +1,9 @@
 package com.example.oauth2.security;
 
 import com.example.oauth2.environment.JWTEnvironmentBuilder;
-import com.example.oauth2.exception.domain.BadRequestException;
-import com.example.oauth2.exception.domain.NotFoundException;
-import com.example.oauth2.exception.domain.UnauthorizedException;
+import com.example.exception.domain.BadRequestException;
+import com.example.exception.domain.NotFoundException;
+import com.example.exception.domain.UnauthorizedException;
 import com.example.oauth2.service.AuthService;
 import com.example.oauth2.service.UserService;
 import lombok.RequiredArgsConstructor;

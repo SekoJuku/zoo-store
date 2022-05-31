@@ -1,6 +1,6 @@
-package com.example.oauth2.exception;
+package com.example.exception;
 
-import com.example.oauth2.exception.domain.*;
+import com.example.exception.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

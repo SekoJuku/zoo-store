@@ -1,6 +1,6 @@
 package com.example.zoostore.service;
 
-import com.example.oauth2.exception.domain.NotFoundException;
+import com.example.exception.domain.NotFoundException;
 import com.example.zoostore.dto.request.ClothesDtoRequest;
 import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.model.Category;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

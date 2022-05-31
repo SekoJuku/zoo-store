@@ -2,10 +2,9 @@ package com.example.oauth2.service;
 
 
 import com.example.oauth2.dto.request.AddUserDtoRequest;
-import com.example.oauth2.dto.request.UserLoginDtoRequest;
 import com.example.oauth2.dto.request.UserRegistrationDtoRequest;
-import com.example.oauth2.exception.domain.BadRequestException;
-import com.example.oauth2.exception.domain.NotFoundException;
+import com.example.exception.domain.BadRequestException;
+import com.example.exception.domain.NotFoundException;
 import com.example.oauth2.mailsender.MailSenderService;
 import com.example.oauth2.mappers.UserMapper;
 import com.example.oauth2.model.AuthProvider;

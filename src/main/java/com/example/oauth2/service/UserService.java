@@ -2,22 +2,17 @@ package com.example.oauth2.service;
 
 import com.example.oauth2.dto.request.UpdateUserRoleDtoRequest;
 import com.example.oauth2.dto.request.UserRegistrationDtoRequest;
-import com.example.oauth2.exception.domain.BadRequestException;
-import com.example.oauth2.exception.domain.NotFoundException;
-import com.example.oauth2.exception.domain.UnauthorizedException;
+import com.example.exception.domain.BadRequestException;
+import com.example.exception.domain.NotFoundException;
+import com.example.exception.domain.UnauthorizedException;
 import com.example.oauth2.model.Role;
 import com.example.oauth2.model.User;
 import com.example.oauth2.repository.UserRepository;
-import com.example.oauth2.security.JWTTokenProvider;
 import com.example.oauth2.security.SecurityConstants;
 import com.example.oauth2.security.UserPrincipal;
 import com.example.oauth2.util.HttpUtils;
 import com.example.oauth2.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 

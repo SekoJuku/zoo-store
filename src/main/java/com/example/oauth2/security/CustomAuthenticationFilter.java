@@ -2,7 +2,7 @@ package com.example.oauth2.security;
 
 import com.example.oauth2.dto.request.UserLoginDtoRequest;
 import com.example.oauth2.environment.JWTEnvironmentBuilder;
-import com.example.oauth2.exception.domain.UnauthorizedException;
+import com.example.exception.domain.UnauthorizedException;
 import com.example.oauth2.util.HttpUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

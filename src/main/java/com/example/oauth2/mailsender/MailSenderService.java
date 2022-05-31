@@ -1,7 +1,7 @@
 package com.example.oauth2.mailsender;
 
 
-import com.example.oauth2.exception.domain.InternalServerException;
+import com.example.exception.domain.InternalServerException;
 import com.example.oauth2.model.RegistrationConfirmation;
 import com.example.oauth2.model.User;
 import com.example.oauth2.repository.RegistrationConfirmationRepository;

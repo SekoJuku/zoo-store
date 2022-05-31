@@ -1,4 +1,4 @@
-package com.example.oauth2.exception;
+package com.example.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
