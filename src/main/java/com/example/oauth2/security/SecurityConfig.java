@@ -54,15 +54,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
 
-            .formLogin()
-            .usernameParameter("email")
-            .passwordParameter("password")
-            .failureHandler(((request, response, exception) -> {
-                throw new UnauthorizedException();
-            }))
-            .successHandler(localAuthenticationSuccessHandler())
+//            .formLogin()
+//            .usernameParameter("email")
+//            .passwordParameter("password")
+//            .failureHandler(((request, response, exception) -> {
+//                throw new UnauthorizedException();
+//            }))
+//            .successHandler(localAuthenticationSuccessHandler())
 
-            .and()
+//            .and()
 
             .oauth2Login()
             .successHandler(oAuth2AuthenticationSuccessHandler())
