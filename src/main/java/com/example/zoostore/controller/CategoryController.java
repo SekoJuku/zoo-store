@@ -1,6 +1,7 @@
 package com.example.zoostore.controller;
 
 import com.example.zoostore.model.Category;
+import com.example.zoostore.model.SuperCategory;
 import com.example.zoostore.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +17,13 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping
-    public List<Category> findAll() {
-        return categoryService.findAll();
-    }
-
     @GetMapping("/{id}")
-    public Category findById(@PathVariable Long id) {
-        return categoryService.findById(id);
+    public List<Category> findAll(@PathVariable Long id) {
+        return categoryService.findBySuperCategoryId(id);
     }
 
-    @GetMapping("/super/{id}")
-    public List<Category> findBySuperCategoryId(@PathVariable Long id) {
-        return categoryService.findBySuperCategoryId(id);
+    @GetMapping("")
+    public List<SuperCategory> findAllSuperCategories() {
+        return categoryService.findAllSuperCategories();
     }
 }

@@ -30,8 +30,8 @@ public class ProductController {
         return productService.getAllByCategoryId(id);
     }
 
-    @PostMapping()
-    public Product addProduct(CreateGoodDtoRequest request) {
+    @PostMapping
+    public Product addProduct(@ModelAttribute CreateGoodDtoRequest request) {
         return productService.addProduct(request);
     }
 

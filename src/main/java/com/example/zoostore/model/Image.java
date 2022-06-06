@@ -15,14 +15,14 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     private Product product;
 
     private String name;
 
     private String suffix;
 
-    //private byte[] data;
+    private byte[] data;
 
     public Image(Product product, String name) {
         this.product = product;

@@ -31,7 +31,7 @@ public class ClothesController {
     }
 
     @PostMapping()
-    public ClothesDtoResponse addClothes(ClothesDtoRequest request) {
+    public ClothesDtoResponse addClothes(@ModelAttribute ClothesDtoRequest request) {
         return clothesService.addClothes(request);
     }
 

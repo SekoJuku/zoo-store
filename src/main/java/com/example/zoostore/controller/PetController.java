@@ -2,6 +2,7 @@ package com.example.zoostore.controller;
 
 import com.example.zoostore.dto.request.CreatePetDtoRequest;
 import com.example.zoostore.dto.response.PetDtoResponse;
+import com.example.zoostore.model.Category;
 import com.example.zoostore.model.PetsInfo;
 import com.example.zoostore.service.PetService;
 import lombok.AllArgsConstructor;

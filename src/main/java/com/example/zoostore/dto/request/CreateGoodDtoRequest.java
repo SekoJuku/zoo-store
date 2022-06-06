@@ -1,6 +1,7 @@
 package com.example.zoostore.dto.request;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class CreateGoodDtoRequest {
@@ -14,4 +15,6 @@ public class CreateGoodDtoRequest {
     private String description;
 
     private Integer quantity;
+
+    private MultipartFile image;
 }

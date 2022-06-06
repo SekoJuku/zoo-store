@@ -1,7 +1,7 @@
 package com.example.zoostore.controller;
 
 import com.example.oauth2.model.User;
-import com.example.zoostore.dto.request.CustomerDetailsDtoRequest;
+import com.example.zoostore.dto.request.ProfileDetailsDtoRequest;
 import com.example.zoostore.service.ProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class ProfileController {
     }
 
     @PutMapping("")
-    public User edit(@RequestBody CustomerDetailsDtoRequest request) {
+    public User edit(@RequestBody ProfileDetailsDtoRequest request) {
         return profileService.edit(request);
     }
 }

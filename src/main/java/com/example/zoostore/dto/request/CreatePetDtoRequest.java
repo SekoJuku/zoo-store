@@ -18,8 +18,6 @@ public class CreatePetDtoRequest {
 
     private String description;
 
-    private MultipartFile image;
-
     private Integer quantity;
 
     private LocalDateTime createdAt;
@@ -31,6 +29,9 @@ public class CreatePetDtoRequest {
     private String city;
 
     private String ownerNumber;
+
+    private MultipartFile image;
+
 
     private String breed;
 }

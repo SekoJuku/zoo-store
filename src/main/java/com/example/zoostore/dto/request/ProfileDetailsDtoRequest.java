@@ -3,7 +3,7 @@ package com.example.zoostore.dto.request;
 import lombok.Data;
 
 @Data
-public class CustomerDetailsDtoRequest {
+public class ProfileDetailsDtoRequest {
     private Long id;
 
     private String gender;
