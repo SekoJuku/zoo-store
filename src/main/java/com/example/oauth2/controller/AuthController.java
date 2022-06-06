@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Log4j2
 @AllArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -41,7 +40,6 @@ public class AuthController {
 
     @PostMapping("/change-password")
     public ResponseEntity<HttpStatus> changePassword(@RequestBody ResetPasswordDtoRequest request) {
-        log.info(String.format("changePassword(%s)", request));
         authService.updatePassword(request);
         return ResponseEntity.ok().build();
     }
