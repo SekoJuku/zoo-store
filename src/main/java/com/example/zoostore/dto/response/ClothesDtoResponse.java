@@ -3,11 +3,13 @@ package com.example.zoostore.dto.response;
 import com.example.zoostore.model.Category;
 import com.example.zoostore.model.Product;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class ClothesDtoResponse {
     private Long id;

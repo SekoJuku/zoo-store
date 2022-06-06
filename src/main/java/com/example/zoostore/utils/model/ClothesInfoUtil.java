@@ -7,8 +7,8 @@ import com.example.zoostore.model.ClothesInfo;
 public class ClothesInfoUtil {
     public static ClothesDtoResponse clothesInfoToProductResponse(ClothesInfo clothesInfo) {
         return new ClothesDtoResponse(
-                clothesInfo.getId(),
                 clothesInfo.getProduct().getId(),
+                null,
                 clothesInfo.getSize(),
                 clothesInfo.getProduct().getCategory().getId(),
                 clothesInfo.getProduct().getName(),

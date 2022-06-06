@@ -6,9 +6,12 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.oauth2.environment.JWTEnvironmentBuilder;
+import com.example.oauth2.mappers.UserMapper;
 import com.example.oauth2.model.User;
 import com.example.oauth2.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,6 +49,13 @@ public class JWTTokenProvider {
     public String getSubject(String token) {
         JWTVerifier verifier = getJWTVerifier();
         return verifier.verify(token).getSubject();
+    }
+
+    @SneakyThrows
+    public User getUserByJwt(String token) {
+        JWTVerifier verifier = getJWTVerifier();
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(verifier.verify(token).getPayload(), User.class);
     }
 
     public Authentication getAuthentication(String email, List<GrantedAuthority> authorities, HttpServletRequest request) {
