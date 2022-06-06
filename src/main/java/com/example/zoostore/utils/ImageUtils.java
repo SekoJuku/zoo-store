@@ -19,7 +19,6 @@ public class ImageUtils {
 
     @SneakyThrows
     public static File byteToFile(byte[] data) {
-        File.createTempFile("image",".jpg");
         File file = new File("");
         try (OutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(data);

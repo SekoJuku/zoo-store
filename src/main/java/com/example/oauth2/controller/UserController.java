@@ -31,27 +31,27 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/user/all")
-    @PreAuthorize("hasAuthority('getAllUsers')")
+    @PreAuthorize("hasRole(ROLE_ADMIN)")
     public ResponseEntity<List<UserDtoResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAll().stream().map(userMapper::toResponse).collect(Collectors.toList()));
     }
 
     @GetMapping("/user/id")
-    @PreAuthorize("hasAuthority('getUserById')")
+    @PreAuthorize("hasRole(ROLE_ADMIN)")
     public ResponseEntity<UserDtoResponse> getUserById(@RequestParam("id") Long id) {
         User user = userService.getUserById(id);
         return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
     @PostMapping("/add-user")
-    @PreAuthorize("hasAuthority('addUser')")
+    @PreAuthorize("hasRole(ROLE_ADMIN)")
     public ResponseEntity<HttpStatus> addUser(@RequestBody AddUserDtoRequest dto) {
         authService.registration(dto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(("/update-role"))
-    @PreAuthorize("hasAuthority('updateUserRole')")
+    @PreAuthorize("hasRole(ROLE_ADMIN)")
     public ResponseEntity<HttpStatus> updateUserRole(@RequestBody UpdateUserRoleDtoRequest dto) {
         userService.updateRole(dto);
         return ResponseEntity.ok().build();

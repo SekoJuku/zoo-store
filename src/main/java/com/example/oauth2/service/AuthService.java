@@ -2,6 +2,7 @@ package com.example.oauth2.service;
 
 
 import com.example.oauth2.dto.request.AddUserDtoRequest;
+import com.example.oauth2.dto.request.ResetPasswordDtoRequest;
 import com.example.oauth2.dto.request.UserRegistrationDtoRequest;
 import com.example.exception.domain.BadRequestException;
 import com.example.exception.domain.NotFoundException;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.util.Optional;
+import java.util.Random;
 
 import static com.example.oauth2.security.SecurityConstants.LOCAL_AUTH_PROVIDER;
 
@@ -42,6 +44,7 @@ public class AuthService {
     private final MailSenderService mailSenderService;
     private final UserService userService;
     private final JWTTokenProvider jwtProvider;
+    private final Random rd = new Random();
 
 
     private final UserRepository userRepository;
@@ -144,6 +147,23 @@ public class AuthService {
         }
     }
 
+    public void updatePassword(ResetPasswordDtoRequest dto) {
+        User user = userService.getUserByEmail(dto.getEmail());
+        if (user.getAuthProvider().getName().equals(SecurityConstants.LOCAL_AUTH_PROVIDER)) {
+            if (user.getResetPasswordCode() == null || !user.getResetPasswordCode().equals(dto.getCode())) {
+                throw new BadRequestException("Code is not valid!");
+            }
+            if (!dto.getPassword().equals(dto.getRePassword())) {
+                throw new BadRequestException("Passwords are not equal");
+            }
+            if (!PasswordUtil.isValidPassword(dto.getPassword())) {
+                throw new BadRequestException("Invalid password");
+            }
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            userRepository.save(user);
+        }
+    }
+
     private AuthProvider getAuthProviderByName(String authProviderName) {
         return authProviderRepository.findByName(authProviderName.toLowerCase())
             .orElseThrow(() -> new NotFoundException("AuthProvider", "name"));
@@ -162,5 +182,13 @@ public class AuthService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(AUTHORIZATION, jwtProvider.generateToken(userPrincipal, HttpUtils.getIp()));
         return httpHeaders;
+    }
+
+    public void sendResetCode(String email) {
+        User user = userService.getUserByEmail(email);
+        long i = 100000L + rd.nextInt(900000);
+        user.setResetPasswordCode(i);
+        mailSenderService.sendEmail("Reset your password", String.format("Code: %s", i), email);
+        userService.save(user);
     }
 }

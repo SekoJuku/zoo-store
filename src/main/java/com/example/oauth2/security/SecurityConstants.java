@@ -15,7 +15,7 @@ public class SecurityConstants {
     public static class JWT {
         public static final String TOKEN_PREFIX = "Bearer ";
         public static final String SECRET = "89juw2HGSAbw72scD2SSw2!nAdnTwjOI64Se32Cr3t";
-        public static final Long EXPIRATION_TIME = (long) (15 * 60 * 1000); // 15 minutes
+        public static final Long EXPIRATION_TIME = (long) (60 * 60 * 1000); // 60 minutes
         public static final String CLIENT_IP = "Client ip";
     }
 
@@ -26,7 +26,11 @@ public class SecurityConstants {
 
         public static final String[] NON_AUTHENTICATED = {
             "/login",
-            "/api/v*/auth/**"
+            "/api/v1/auth/**"
+        };
+
+        public static final String[] USER = {
+            "/api/v*/profile/**"
         };
 
 //        public static final String[] SWAGGER = {

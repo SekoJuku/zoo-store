@@ -70,6 +70,8 @@ public class User {
 
     private String city;
 
+    private Long resetPasswordCode;
+
     @PrePersist
     private void prePersist() {
         this.createdTime = LocalDateTime.now();

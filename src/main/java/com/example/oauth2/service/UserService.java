@@ -1,5 +1,6 @@
 package com.example.oauth2.service;
 
+import com.example.oauth2.dto.request.ResetPasswordDtoRequest;
 import com.example.oauth2.dto.request.UpdateUserRoleDtoRequest;
 import com.example.oauth2.dto.request.UserRegistrationDtoRequest;
 import com.example.exception.domain.BadRequestException;
@@ -71,17 +72,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void updatePassword(Principal principal, UserRegistrationDtoRequest dto) {
-        User user = getUserByEmail(principal.getName());
-        if (user.getAuthProvider().getName().equals(SecurityConstants.LOCAL_AUTH_PROVIDER)) {
-            if (!dto.getPassword().equals(dto.getRePassword())) {
-                throw new BadRequestException("Passwords are not equal");
-            }
-            if (!PasswordUtil.isValidPassword(dto.getPassword())) {
-                throw new BadRequestException("Invalid password");
-            }
-            user.setPassword(passwordEncoder.encode(dto.getPassword()));
-            userRepository.save(user);
-        }
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }
