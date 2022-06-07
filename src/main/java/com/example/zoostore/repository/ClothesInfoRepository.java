@@ -4,10 +4,12 @@ import com.example.zoostore.model.ClothesInfo;
 import com.example.zoostore.model.PetsInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface ClothesInfoRepository extends JpaRepository<ClothesInfo, Long> {
     @Query(value = "SELECT * FROM clothes_info cl\n" +
             "INNER JOIN products p on p.id = cl.product_id\n" +

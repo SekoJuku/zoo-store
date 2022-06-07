@@ -4,6 +4,7 @@ import com.example.zoostore.dto.request.ClothesDtoRequest;
 import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.model.ClothesInfo;
 import com.example.zoostore.service.ClothesService;
+import com.example.zoostore.utils.model.ClothesInfoUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,12 @@ public class ClothesController {
 
     @PostMapping()
     public ClothesDtoResponse addClothes(@ModelAttribute ClothesDtoRequest request) {
-        return clothesService.addClothes(request);
+        return ClothesInfoUtil.clothesInfoToProductResponse(clothesService.addClothes(request));
+    }
+
+    @PutMapping("/{id}")
+    public ClothesDtoResponse updateClothes(@PathVariable Long id, @ModelAttribute ClothesDtoRequest request) {
+        return ClothesInfoUtil.clothesInfoToProductResponse(clothesService.updateClothes(request, id));
     }
 
     @DeleteMapping("/{id}")

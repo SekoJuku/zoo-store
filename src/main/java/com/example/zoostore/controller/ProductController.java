@@ -35,6 +35,12 @@ public class ProductController {
         return productService.addProduct(request);
     }
 
+    //edit product
+    @PutMapping("/{id}")
+    public Product updateProduct(@ModelAttribute CreateGoodDtoRequest request, @PathVariable Long id) {
+        return productService.updateProduct(request, id);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);

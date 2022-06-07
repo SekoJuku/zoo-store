@@ -7,18 +7,10 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
-public class CreatePetDtoRequest {
+public class CreatePetDtoRequest extends ProductDtoRequest {
     private Long id;
 
     private Long categoryId;
-
-    private String name;
-
-    private Double price;
-
-    private String description;
-
-    private Integer quantity;
 
     private LocalDateTime createdAt;
 

@@ -9,25 +9,23 @@ import javax.persistence.*;
 @Table(name = "images")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(targetEntity = Product.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     private String name;
 
-    private String suffix;
+    private String extension;
+
+    private String contentType;
 
     private byte[] data;
-
-    public Image(Product product, String name) {
-        this.product = product;
-        this.name = name;
-        //this.suffix = suffix;
-        //this.data = data;
-    }
 }

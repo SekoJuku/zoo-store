@@ -10,12 +10,15 @@ import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.PetsInfoRepository;
 import com.example.zoostore.repository.ProductRepository;
+import com.example.zoostore.utils.model.ImageFacade;
 import com.example.zoostore.utils.model.PetsInfoUtils;
 import com.example.zoostore.utils.model.ProductUtils;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,7 @@ public class PetService {
         ProductUtils.ProductDtoToProduct(request, product);
         setCategoryToProduct(request.getCategoryId(), product);
         PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
+        ProductUtils.setImageToProduct(product, request.getImage());
         pet.setProduct(product);
         productRepository.save(product);
         return petsInfoRepository.save(pet);
@@ -90,6 +94,7 @@ public class PetService {
         Category category = getCategoryById(request.getCategoryId());
         product.setCategory(category);
         ProductUtils.ProductDtoToProduct(request, product);
+        ProductUtils.setImageToProduct(product, request.getImage());
         Product savedProduct = productRepository.save(product);
         pet.setProduct(savedProduct);
         return petsInfoRepository.save(pet);

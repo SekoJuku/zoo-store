@@ -6,18 +6,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
-public class ClothesDtoRequest {
+public class ClothesDtoRequest extends ProductDtoRequest {
     private MultipartFile image;
 
     private String size;
 
     private Long categoryId;
-
-    private String name;
-
-    private Double price;
-
-    private String description;
-
-    private Integer quantity;
 }

@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,23 +26,15 @@ public class Product {
 
     private String description;
 
-//    @OneToMany
-//    @JoinColumn(name = "image_id", referencedColumnName = "id", table = "images")
-//    private List<Image> images;
+    @OneToOne(targetEntity = Image.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private Image image;
 
     private Integer quantity;
 
     private LocalDateTime createdTime;
 
     private LocalDateTime updatedTime;
-
-    public Product(Category category, String name, Double price, String description, Integer quantity) {
-        this.category = category;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.quantity = quantity;
-    }
 
     @PrePersist
     public void prePersist() {

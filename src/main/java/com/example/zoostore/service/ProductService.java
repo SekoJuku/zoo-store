@@ -7,10 +7,14 @@ import com.example.zoostore.model.Category;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.ProductRepository;
+import com.example.zoostore.utils.ImageUtils;
+import com.example.zoostore.utils.model.ImageFacade;
 import com.example.zoostore.utils.model.ProductUtils;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,17 +57,39 @@ public class ProductService {
             throw new BadRequestException("Wrong category");
         }
 
-        Product product = new Product(
-                category,
-                request.getName(),
-                request.getPrice(),
-                request.getDescription(),
-                request.getQuantity());
+        Product product = Product.builder()
+                .category(category)
+                .name(request.getName())
+                .description(request.getDescription())
+                .price(request.getPrice())
+                .quantity(request.getQuantity())
+                .build();
+        ProductUtils.setImageToProduct(product, request.getImage());
 
         productRepository.save(product);
 
         return product;
     }
+
+    public Product updateProduct(CreateGoodDtoRequest request, Long id) {
+        Category category = getCategoryById(request.getCategoryId());
+
+        if(!isValidCategory(category)) {
+            throw new BadRequestException("Wrong category");
+        }
+
+        Product product = getProductById(id);
+
+        ProductUtils.ProductDtoToProduct(request, product);
+
+        ProductUtils.setImageToProduct(product, request.getImage());
+
+        productRepository.save(product);
+
+        return product;
+    }
+
+
 
     public void deleteProductById(Long id) {
         if(!productRepository.existsById(id) || getProductById(id) != null)
@@ -76,6 +102,7 @@ public class ProductService {
     }
 
     private boolean isValidCategory(Category category) {
+
         return category.getSuperCategory().getId() == 3;
     }
 }
