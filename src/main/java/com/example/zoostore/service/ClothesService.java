@@ -1,7 +1,6 @@
 package com.example.zoostore.service;
 
 import com.example.exception.domain.NotFoundException;
-import com.example.oauth2.service.UserService;
 import com.example.zoostore.dto.request.ClothesDtoRequest;
 import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.model.Category;
@@ -10,7 +9,6 @@ import com.example.zoostore.model.Image;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.ClothesInfoRepository;
-import com.example.zoostore.repository.ImageRepository;
 import com.example.zoostore.repository.ProductRepository;
 import com.example.zoostore.utils.model.ClothesInfoUtil;
 import com.example.zoostore.utils.model.ImageFacade;
@@ -78,16 +76,7 @@ public class ClothesService {
 
         Image image = ProductUtils.setImageToProduct(product, request.getImage());
 
-        ClothesInfo clothesInfo = new ClothesInfo(product, request.getSize());
-
-        Product save = productRepository.save(product);
-        if (image != null) {
-            image.setProduct(save);
-            imageService.editImage(image);
-        }
-        clothesInfoRepository.save(clothesInfo);
-
-        return clothesInfo;
+        return saveImageAndReturnClothesInfo(request, product, image);
     }
 
     private boolean verify(Category category) {
@@ -106,15 +95,24 @@ public class ClothesService {
 
         ProductUtils.ProductDtoToProduct(request, product);
 
-        ImageFacade.setImageIfNeeded(product, request.getImage());
+        Image image = ImageFacade.setImageIfNeeded(product, request.getImage());
 
+        return saveImageAndReturnClothesInfo(request, product, image);
+    }
+
+    private ClothesInfo saveImageAndReturnClothesInfo(ClothesDtoRequest request, Product product, Image image) {
         ClothesInfo clothesInfo = new ClothesInfo(product, request.getSize());
 
-        productRepository.save(product);
+        Product save = productRepository.save(product);
+        if (image != null) {
+            image.setProduct(save);
+            imageService.editImage(image);
+        }
         clothesInfoRepository.save(clothesInfo);
 
         return clothesInfo;
     }
+
     @Transactional
     public void deleteClothesById(Long id) {
         if(clothesInfoRepository.findByProductId(id).isEmpty())
