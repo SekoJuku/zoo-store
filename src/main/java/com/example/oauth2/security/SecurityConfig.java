@@ -51,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(SecurityConstants.PUBLIC_URLS.PUBLIC).permitAll()
             .antMatchers(SecurityConstants.PUBLIC_URLS.NON_AUTHENTICATED).not().authenticated()
             .antMatchers(SecurityConstants.PUBLIC_URLS.USER).hasRole("USER_ROLE")
-            .anyRequest().authenticated()
             .and()
 
 //            .formLogin()
