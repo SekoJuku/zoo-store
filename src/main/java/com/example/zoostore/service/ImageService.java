@@ -14,10 +14,7 @@ public class ImageService {
     public final ImageRepository imageRepository;
     public final ProductService productService;
 
-    // get image by product id
     public Image getImagesByProductId(Long id) {
         return imageRepository.getImageByProductId(id);
     }
-
-
 }

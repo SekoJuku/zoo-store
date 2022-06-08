@@ -9,6 +9,8 @@ import com.example.zoostore.utils.model.CustomerUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @AllArgsConstructor
 public class ProfileService {
@@ -16,14 +18,23 @@ public class ProfileService {
     private final JWTTokenProvider jwtTokenProvider;
 
     public User edit(ProfileDetailsDtoRequest request) {
+        verifyId(request.getId());
         User user = userService.getUserById(request.getId());
         CustomerUtils.CustomerDtoToUser(request,user);
         return userService.save(user);
     }
 
     public User getById(Long id) {
-        String jwt = HttpUtils.getJWT();
+        verifyId(id);
         return userService.getUserById(id);
+    }
+
+    private void verifyId(Long id) {
+        String jwt = HttpUtils.getJWT();
+        User userByJwt = jwtTokenProvider.getUserByJwt(jwt);
+        if (!Objects.equals(userByJwt.getId(), id)) {
+            throw new IllegalArgumentException("You can only get your own profile");
+        }
     }
 
 }

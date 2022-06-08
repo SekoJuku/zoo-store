@@ -30,6 +30,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.Random;
@@ -93,21 +94,14 @@ public class AuthService {
         }
     }
 
-    private void register(AddUserDtoRequest dto, String authProviderName) {
+    public void register(AddUserDtoRequest dto, String authProviderName) {
         if (Strings.isBlank(dto.getEmail())) {
             throw new BadRequestException("Email is blank");
         }
 
         Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (user.getAuthProvider().getName().equals(LOCAL_AUTH_PROVIDER)) {
-                if (user.getRegistrationConfirmed()) {
-                    throw new BadRequestException("User with this email is exists");
-                }
-            } else {
-                throw new BadRequestException("User with this email is exists");
-            }
+            throw new BadRequestException("User with this email is exists");
         }
 
         Role role;
@@ -170,9 +164,13 @@ public class AuthService {
     }
 
     public ResponseEntity<?> auth(String username, String password) {
-        UserPrincipal user = (UserPrincipal) userService.loadUserByUsername(username);
+        User user = userService.getUserByEmail(username);
+        if (!user.getRegistrationConfirmed()) {
+            throw new BadCredentialsException("User is locked");
+        }
+        UserPrincipal userPrincipal = new UserPrincipal(user);
         if (passwordEncoder.matches(password, user.getPassword())) {
-            HttpHeaders authorizationHeader = getJwtHeader(user);
+            HttpHeaders authorizationHeader = getJwtHeader(userPrincipal);
             return new ResponseEntity<>(user, authorizationHeader, HttpStatus.OK);
         }
         throw new BadCredentialsException("Username and password incorrect");

@@ -22,7 +22,6 @@ public class CommentService {
         return commentRepository.getAllByProductId(id);
     }
 
-
     public Comment addCommentToProductId(CreateCommentDtoRequest request) {
         Comment comment = CommentUtils.commentDtoRequestToComment(request);
         if (request.getId() == null) {
