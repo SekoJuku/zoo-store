@@ -39,8 +39,8 @@ spring:
           starttls.enable: true
 
 custom-properties:
-#  domain: https://promo-code-shop-backend.herokuapp.com
-  domain: http://localhost:8080
+  domain: https://api-zoo-app.herokuapp.com
+#  domain: http://localhost:8080
 
 security:
   token:
