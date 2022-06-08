@@ -21,6 +21,7 @@ public class ImageController {
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable Long id) {
         Image image = imageService.getImagesByProductId(id);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, image.getContentType())
                 .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", image.getName()+"."+image.getExtension()))

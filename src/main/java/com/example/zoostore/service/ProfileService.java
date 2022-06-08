@@ -31,10 +31,10 @@ public class ProfileService {
 
     private void verifyId(Long id) {
         String jwt = HttpUtils.getJWT();
-        User userByJwt = jwtTokenProvider.getUserByJwt(jwt);
-        if (!Objects.equals(userByJwt.getId(), id)) {
-            throw new IllegalArgumentException("You can only get your own profile");
+        Long userId = Long.valueOf(jwtTokenProvider.getSubject(jwt));
+        User userById = userService.getUserById(userId);
+        if (Objects.isNull(userById) || !userById.getId().equals(id)) {
+            throw new IllegalArgumentException("User can edit only his profile");
         }
     }
-
 }

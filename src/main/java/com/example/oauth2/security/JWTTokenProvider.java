@@ -12,6 +12,7 @@ import com.example.oauth2.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class JWTTokenProvider {
 
     private final JWTEnvironmentBuilder jwtEnvironmentBuilder;
@@ -55,7 +57,8 @@ public class JWTTokenProvider {
     public User getUserByJwt(String token) {
         JWTVerifier verifier = getJWTVerifier();
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(verifier.verify(token).getPayload(), User.class);
+        User user = objectMapper.readValue(verifier.verify(token).getPayload(), User.class);
+        return user;
     }
 
     public Authentication getAuthentication(String email, List<GrantedAuthority> authorities, HttpServletRequest request) {

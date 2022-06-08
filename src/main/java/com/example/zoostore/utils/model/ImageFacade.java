@@ -28,7 +28,7 @@ public class ImageFacade {
                 .data(data)
                 .build();
     }
-    public static void setImageIfNeeded(Product product, MultipartFile file) throws IOException {
+    public static Image setImageIfNeeded(Product product, MultipartFile file) throws IOException {
         product.setImage(null);
         if (file != null) {
             String[] split = Objects.requireNonNull(file.getOriginalFilename()).split("\\.");
@@ -39,6 +39,8 @@ public class ImageFacade {
                     .data(ImageUtils.compressImage(file.getBytes()))
                     .build();
             product.setImage(image);
+            return image;
         }
+        return null;
     }
 }

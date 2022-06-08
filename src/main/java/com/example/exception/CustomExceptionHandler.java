@@ -36,6 +36,11 @@ public class CustomExceptionHandler {
         LOGGER.debug(e.getMessage());
         return createHttpResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<HttpResponseException> illegalArgumentException(IllegalArgumentException e) {
+        LOGGER.debug(e.getMessage());
+        return createHttpResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
 
     private ResponseEntity<HttpResponseException> createHttpResponse(HttpStatus httpStatus, String message) {
         return new ResponseEntity<>(new HttpResponseException(httpStatus.value(), httpStatus,

@@ -1,13 +1,16 @@
 package com.example.zoostore.service;
 
 import com.example.exception.domain.NotFoundException;
+import com.example.oauth2.service.UserService;
 import com.example.zoostore.dto.request.ClothesDtoRequest;
 import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.model.Category;
 import com.example.zoostore.model.ClothesInfo;
+import com.example.zoostore.model.Image;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.ClothesInfoRepository;
+import com.example.zoostore.repository.ImageRepository;
 import com.example.zoostore.repository.ProductRepository;
 import com.example.zoostore.utils.model.ClothesInfoUtil;
 import com.example.zoostore.utils.model.ImageFacade;
@@ -28,6 +31,7 @@ public class ClothesService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductService productService;
+    private ImageService imageService;
 
     public List<ClothesInfo> getAllClothes() {
         return clothesInfoRepository.getAllClothes();
@@ -56,6 +60,7 @@ public class ClothesService {
                 .orElseThrow(() -> new NotFoundException(String.format("Clothes with id: %d not found", id)));
     }
 
+    @Transactional
     public ClothesInfo addClothes(ClothesDtoRequest request) {
         Category category = getCategoryById(request.getCategoryId());
 
@@ -71,11 +76,15 @@ public class ClothesService {
                 .description(request.getDescription())
                 .build();
 
-        ProductUtils.setImageToProduct(product, request.getImage());
+        Image image = ProductUtils.setImageToProduct(product, request.getImage());
 
         ClothesInfo clothesInfo = new ClothesInfo(product, request.getSize());
 
-        productRepository.save(product);
+        Product save = productRepository.save(product);
+        if (image != null) {
+            image.setProduct(save);
+            imageService.editImage(image);
+        }
         clothesInfoRepository.save(clothesInfo);
 
         return clothesInfo;
