@@ -12,7 +12,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
   security:
     oauth2:
       client:
