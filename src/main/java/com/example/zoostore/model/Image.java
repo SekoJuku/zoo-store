@@ -29,5 +29,6 @@ public class Image {
 
     private String contentType;
 
+    @JsonIgnore
     private byte[] data;
 }

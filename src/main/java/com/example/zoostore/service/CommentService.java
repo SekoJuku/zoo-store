@@ -25,9 +25,14 @@ public class CommentService {
     public Comment addCommentToProductId(CreateCommentDtoRequest request) {
         Comment comment = CommentUtils.commentDtoRequestToComment(request);
         if (request.getId() == null) {
-            throw new BadRequestException(String.format("Product with id: %d is not found!",request.getId()));
+            throw new BadRequestException(String.format("Product with id: %d is not found!", request.getId()));
         }
         comment.setProduct(productService.getProductById(request.getId()));
         return commentRepository.save(comment);
     }
+
+    public Comment getCommentById(Long id) {
+        return commentRepository.getById(id);
+    }
+
 }

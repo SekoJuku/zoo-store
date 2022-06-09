@@ -1,6 +1,7 @@
 package com.example.zoostore.model;
 
 import com.example.oauth2.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,10 +26,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double star;
+    private Integer star;
 
     private String text;
 
+    @JsonIgnore
     @ManyToOne
     private Product product;
 }
