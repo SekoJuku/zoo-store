@@ -18,8 +18,8 @@ public class ProfileService {
     private final JWTTokenProvider jwtTokenProvider;
 
     public User edit(ProfileDetailsDtoRequest request) {
-        verifyId(request.getId());
-        User user = userService.getUserById(request.getId());
+        Long userId = getUserId();
+        User user = userService.getUserById(userId);
         CustomerUtils.CustomerDtoToUser(request,user);
         return userService.save(user);
     }
@@ -29,12 +29,21 @@ public class ProfileService {
         return userService.getUserById(id);
     }
 
+    public User getById() {
+        return getById(getUserId());
+    }
+
     private void verifyId(Long id) {
-        String jwt = HttpUtils.getJWT();
-        Long userId = Long.valueOf(jwtTokenProvider.getSubject(jwt));
+        Long userId = getUserId();
         User userById = userService.getUserById(userId);
         if (Objects.isNull(userById) || !userById.getId().equals(id)) {
             throw new IllegalArgumentException("User can edit only his profile");
         }
+    }
+
+    private Long getUserId() {
+        String jwt = HttpUtils.getJWT();
+        Long userId = Long.valueOf(jwtTokenProvider.getSubject(jwt));
+        return userId;
     }
 }

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
     private final ProfileService profileService;
 
-    @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) {
-        return profileService.getById(id);
+    @GetMapping("")
+    public User getById() {
+        return profileService.getById();
     }
 
     @PutMapping("")
