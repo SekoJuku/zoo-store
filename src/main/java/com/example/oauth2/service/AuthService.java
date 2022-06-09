@@ -78,13 +78,6 @@ public class AuthService {
         if (dto == null) {
             throw new BadRequestException("RequestDto is null");
         }
-        if (!dto.getPassword().equals(dto.getRePassword())) {
-            throw new BadRequestException("Passwords are not equal");
-        }
-        if (!PasswordUtil.isValidPassword(dto.getPassword())) {
-            throw new BadRequestException("Invalid password");
-        }
-
         register(dto, LOCAL_AUTH_PROVIDER);
     }
 
@@ -103,6 +96,13 @@ public class AuthService {
         if (optionalUser.isPresent()) {
             throw new BadRequestException("User with this email is exists");
         }
+        if (!dto.getPassword().equals(dto.getRePassword())) {
+            throw new BadRequestException("Passwords are not equal");
+        }
+        if (!PasswordUtil.isValidPassword(dto.getPassword())) {
+            throw new BadRequestException("Invalid password");
+        }
+
 
         Role role;
         if (dto.getRoleId() == null) {
