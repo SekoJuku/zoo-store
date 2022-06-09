@@ -26,7 +26,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer star;
+    private Double star;
 
     private String text;
 
