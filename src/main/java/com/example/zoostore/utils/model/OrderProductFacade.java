@@ -8,6 +8,7 @@ public class OrderProductFacade {
     // create OrderProduct by OrderDtoRequest
     public static OrderProduct orderDtoRequestToOrderProduct(OrderDtoRequest request) {
         return OrderProduct.builder()
+                .id(request.getId())
                 .quantity(request.getQuantity())
                 .build();
     }
