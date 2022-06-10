@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @GetMapping("/confirm-registration")
-    public ResponseEntity<HttpStatus> confirmRegistration(@RequestParam("token") String token,
+    @GetMapping(value = "/confirm-registration", produces = "text/html")
+    public String confirmRegistration(@RequestParam("token") String token,
                                                           @RequestParam("email") String email) {
         authService.confirmRegistration(token, email);
-        return ResponseEntity.ok().build();
+        return "<div style=\"display:flex;margin:auto;align-items:center;text-align:center;justify-content: center;\"><svg width=\"50px\" height=\"50px\"><image xlink:href=\"https://www.svgrepo.com/show/218199/confirm.svg\" width=\"50\" height=\"50\"></svg><h1>Your account has been successfully activated</h1></div>";
     }
 
     @GetMapping("/code")
