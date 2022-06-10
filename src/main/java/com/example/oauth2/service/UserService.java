@@ -77,6 +77,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User userByEmailAndProvider(String email) {
-        return userRepository.findByEmailAndAuthProviderName(email, "google").orElseThrow(() -> new NotFoundException("User", "email"));
+        return userRepository.findByEmailAndAuthProvider_Name(email, "google")
+                .orElseThrow(() -> new NotFoundException("User", "email"));
     }
 }
