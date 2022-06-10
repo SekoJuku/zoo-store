@@ -24,6 +24,7 @@ public class Product {
 
     private Double price;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToOne(targetEntity = Image.class, cascade = CascadeType.ALL)

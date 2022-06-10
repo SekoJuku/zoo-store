@@ -18,6 +18,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class ClothesService {
                 .orElseThrow(() -> new NotFoundException(String.format("Clothes with id: %d not found", id)));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {SQLException.class, RuntimeException.class})
     public ClothesInfo addClothes(ClothesDtoRequest request) {
         Category category = getCategoryById(request.getCategoryId());
 
@@ -101,7 +102,10 @@ public class ClothesService {
     }
 
     private ClothesInfo saveImageAndReturnClothesInfo(ClothesDtoRequest request, Product product, Image image) {
-        ClothesInfo clothesInfo = new ClothesInfo(product, request.getSize());
+        ClothesInfo clothesInfo = ClothesInfo.builder()
+                .product(product)
+                .size(request.getSize())
+                .build();
 
         Product save = productRepository.save(product);
         if (image != null) {
