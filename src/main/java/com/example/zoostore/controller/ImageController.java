@@ -26,7 +26,7 @@ public class ImageController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, image.getContentType())
-                .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", image.getName()+ File.separator+image.getExtension()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", image.getName()+"."+image.getExtension()))
                 .body(image.getData());
     }
 }
