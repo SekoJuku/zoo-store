@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,6 +94,9 @@ public class OrderService {
     public HttpStatus payForOrder(Long id) {
         Payment payment = getPaymentByOrderId(id);
         Order order = payment.getOrder();
+        if (!Objects.equals(order.getUser().getId(), profileService.getUserId())) {
+            throw new IllegalArgumentException("You can't pay for this order");
+        }
         getAllOrderProducts(order.getId()).forEach(e -> {
             Product product = e.getProduct();
             if (product.getQuantity() < e.getQuantity()) {
