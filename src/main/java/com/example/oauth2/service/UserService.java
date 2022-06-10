@@ -1,18 +1,13 @@
 package com.example.oauth2.service;
 
-import com.example.oauth2.dto.request.ResetPasswordDtoRequest;
 import com.example.oauth2.dto.request.UpdateUserRoleDtoRequest;
-import com.example.oauth2.dto.request.UserRegistrationDtoRequest;
-import com.example.exception.domain.BadRequestException;
 import com.example.exception.domain.NotFoundException;
 import com.example.exception.domain.UnauthorizedException;
 import com.example.oauth2.model.Role;
 import com.example.oauth2.model.User;
 import com.example.oauth2.repository.UserRepository;
-import com.example.oauth2.security.SecurityConstants;
 import com.example.oauth2.security.UserPrincipal;
 import com.example.oauth2.util.HttpUtils;
-import com.example.oauth2.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -76,8 +70,8 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User userByEmailAndProvider(String email) {
-        return userRepository.findByEmailAndAuthProvider_Name(email, "google")
+    public User userByEmailAndProvider(String email, String authProvider) {
+        return userRepository.findByEmailAndAuthProvider_Name(email, authProvider)
                 .orElseThrow(() -> new NotFoundException("User", "email"));
     }
 }

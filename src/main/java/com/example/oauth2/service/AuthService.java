@@ -22,6 +22,7 @@ import com.example.oauth2.security.UserPrincipal;
 import com.example.oauth2.util.HttpUtils;
 import com.example.oauth2.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.Random;
@@ -38,6 +38,7 @@ import java.util.Random;
 import static com.example.oauth2.security.SecurityConstants.LOCAL_AUTH_PROVIDER;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class AuthService {
     public static final String AUTHORIZATION = "Authorization";
@@ -81,9 +82,9 @@ public class AuthService {
         register(dto, LOCAL_AUTH_PROVIDER);
     }
 
-    public void registrationUserByOAuth(String email, String authProviderName, String token) {
+    public void registrationUserByOAuth(String email, String authProviderName) {
         if (!userRepository.existsByEmailAndAuthProvider_Name(email, authProviderName)) {
-            register(new AddUserDtoRequest(email, token), authProviderName);
+            register(new AddUserDtoRequest(email), authProviderName);
         }
     }
 
@@ -95,11 +96,13 @@ public class AuthService {
         if (optionalUser.isPresent()) {
             throw new BadRequestException("User with this email is exists");
         }
-        if (!dto.getPassword().equals(dto.getRePassword())) {
-            throw new BadRequestException("Passwords are not equal");
-        }
-        if (!PasswordUtil.isValidPassword(dto.getPassword())) {
-            throw new BadRequestException("Invalid password");
+        if (authProviderName.equals("local")) {
+            if (!dto.getPassword().equals(dto.getRePassword())) {
+                throw new BadRequestException("Passwords are not equal");
+            }
+            if (!PasswordUtil.isValidPassword(dto.getPassword())) {
+                throw new BadRequestException("Invalid password");
+            }
         }
 
         Role role;
@@ -120,7 +123,6 @@ public class AuthService {
         if (optionalUser.isEmpty()) {
             user = User.builder()
                     .email(dto.getEmail())
-                    .token(dto.getToken())
                     .password(password)
                     .role(role)
                     .authProvider(authProvider)
@@ -129,7 +131,6 @@ public class AuthService {
         } else {
             user = optionalUser.get();
             user.setPassword(password);
-            user.setToken(dto.getToken());
             user.setRole(role);
             user.setAuthProvider(authProvider);
         }
@@ -191,6 +192,6 @@ public class AuthService {
     }
 
     public String getTokenFromOauth2(String email) {
-        return userService.userByEmailAndProvider(email).getToken();
+        return userService.userByEmailAndProvider(email, "google").getToken();
     }
 }

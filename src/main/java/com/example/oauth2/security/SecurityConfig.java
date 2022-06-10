@@ -8,6 +8,7 @@ import com.example.oauth2.model.User;
 import com.example.oauth2.service.AuthService;
 import com.example.oauth2.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         securedEnabled = true,
         jsr250Enabled = true)
 @RequiredArgsConstructor
+@Log4j2
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
@@ -107,11 +109,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             CustomOAuth2User user = (CustomOAuth2User) authentication.getPrincipal();
             String authProviderName = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
             try {
+                log.info(authProviderName + ": " + user.getName());
+                authService.registrationUserByOAuth(user.getName(), authProviderName);
                 String token = jwtTokenProvider.generateToken(user.getName(), request);
-                authService.registrationUserByOAuth(user.getName(), authProviderName, token);
-//                User user1 = userService.userByEmailAndProvider(user.getName());
-//                user1.setToken(token);
-//                userService.save(user1);
+                User user1 = userService.userByEmailAndProvider(user.getName(), authProviderName);
+                log.info("user: " + user1);
+                user1.setToken(token);
+                userService.save(user1);
                 response.setHeader(jwtEnvironmentBuilder.getJWT_TOKEN_HEADER(), token);
             } catch (BadRequestException e) {
                 response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -119,6 +123,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
             } catch (Exception e) {
                 request.logout();
+                log.error(e.getMessage());
                 response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             }
         };
