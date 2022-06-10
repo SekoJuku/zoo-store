@@ -6,17 +6,18 @@ import com.example.zoostore.model.ClothesInfo;
 
 public class ClothesInfoFacade {
     public static ClothesDtoResponse clothesInfoToProductResponse(ClothesInfo clothesInfo) {
-        return new ClothesDtoResponse(
-                clothesInfo.getProduct().getId(),
-                null,
-                clothesInfo.getSize(),
-                clothesInfo.getProduct().getCategory().getId(),
-                clothesInfo.getProduct().getName(),
-                clothesInfo.getProduct().getPrice(),
-                clothesInfo.getProduct().getDescription(),
-                clothesInfo.getProduct().getQuantity(),
-                clothesInfo.getProduct().getCreatedTime(),
-                clothesInfo.getProduct().getUpdatedTime());
+        return ClothesDtoResponse.builder()
+                .categoryId(clothesInfo.getProduct().getCategory().getId())
+                .image(clothesInfo.getProduct().getImage())
+                .description(clothesInfo.getProduct().getDescription())
+                .productId(clothesInfo.getProduct().getId())
+                .createdTime(clothesInfo.getProduct().getCreatedTime())
+                .updatedTime(clothesInfo.getProduct().getUpdatedTime())
+                .name(clothesInfo.getProduct().getName())
+                .price(clothesInfo.getProduct().getPrice())
+                .quantity(clothesInfo.getProduct().getQuantity())
+                .size(clothesInfo.getSize())
+                .build();
     }
 
     public static ClothesInfo clothesRequestToClothesInfo(ClothesDtoRequest request, ClothesInfo clothesInfo) {

@@ -20,6 +20,7 @@ public class PetsInfoFacade {
                 petsInfo.getProduct().getId(),
                 petsInfo.getProduct().getCategory().getId(),
                 petsInfo.getProduct().getName(),
+                petsInfo.getProduct().getImage(),
                 petsInfo.getProduct().getPrice(),
                 petsInfo.getProduct().getDescription(),
                 petsInfo.getGender(),

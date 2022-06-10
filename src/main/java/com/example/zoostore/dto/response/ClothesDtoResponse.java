@@ -17,6 +17,8 @@ public class ClothesDtoResponse {
 
     private Long categoryId;
 
+    private String image;
+
     private String name;
 
     private Double price;
