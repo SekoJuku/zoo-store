@@ -35,9 +35,6 @@ public class ProductService {
 
         Product product = optionalProduct.get();
 
-        if(!isValidCategory(product.getCategory())) {
-            throw new BadRequestException("Product not found");
-        }
         return product;
     }
 

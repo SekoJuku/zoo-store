@@ -7,6 +7,7 @@ import com.example.zoostore.model.ClothesInfo;
 public class ClothesInfoFacade {
     public static ClothesDtoResponse clothesInfoToProductResponse(ClothesInfo clothesInfo) {
         return ClothesDtoResponse.builder()
+                .id(clothesInfo.getId())
                 .categoryId(clothesInfo.getProduct().getCategory().getId())
                 .image(clothesInfo.getProduct().getImage())
                 .description(clothesInfo.getProduct().getDescription())

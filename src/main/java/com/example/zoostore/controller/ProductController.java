@@ -31,13 +31,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product addProduct(@ModelAttribute CreateGoodDtoRequest request) {
+    public Product addProduct(@RequestBody CreateGoodDtoRequest request) {
         return productService.addProduct(request);
     }
 
     //edit product
     @PutMapping("/{id}")
-    public Product updateProduct(@ModelAttribute CreateGoodDtoRequest request, @PathVariable Long id) {
+    public Product updateProduct(@RequestBody CreateGoodDtoRequest request, @PathVariable Long id) {
         return productService.updateProduct(request, id);
     }
 

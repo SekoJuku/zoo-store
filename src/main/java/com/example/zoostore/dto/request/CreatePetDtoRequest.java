@@ -22,7 +22,5 @@ public class CreatePetDtoRequest extends ProductDtoRequest {
 
     private String ownerNumber;
 
-
-
     private String breed;
 }
