@@ -109,9 +109,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             try {
                 authService.registrationUserByOAuth(user.getName(), authProviderName);
                 String token = jwtTokenProvider.generateToken(user.getName(), request);
-                User user1 = userService.userByEmailAndProvider(user.getName());
-                user1.setToken(token);
-                userService.save(user1);
+//                User user1 = userService.userByEmailAndProvider(user.getName());
+//                user1.setToken(token);
+//                userService.save(user1);
                 response.setHeader(jwtEnvironmentBuilder.getJWT_TOKEN_HEADER(), token);
             } catch (BadRequestException e) {
                 response.setStatus(HttpStatus.BAD_REQUEST.value());
