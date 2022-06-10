@@ -3,7 +3,7 @@ package com.example.zoostore.utils.model;
 import com.example.oauth2.model.User;
 import com.example.zoostore.dto.request.ProfileDetailsDtoRequest;
 
-public class CustomerUtils {
+public class CustomerFacade {
     public static User CustomerDtoToUser(ProfileDetailsDtoRequest request, User user) {
         user.setGender(request.getGender());
         user.setFirstName(request.getFirstName());

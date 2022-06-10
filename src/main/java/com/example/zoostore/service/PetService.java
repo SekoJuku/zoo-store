@@ -11,15 +11,12 @@ import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.PetsInfoRepository;
 import com.example.zoostore.repository.ProductRepository;
-import com.example.zoostore.utils.model.ImageFacade;
-import com.example.zoostore.utils.model.PetsInfoUtils;
-import com.example.zoostore.utils.model.ProductUtils;
+import com.example.zoostore.utils.model.PetsInfoFacade;
+import com.example.zoostore.utils.model.ProductFacade;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +42,13 @@ public class PetService {
         List<PetsInfo> list = getAllPets();
         List<PetDtoResponse> response = new ArrayList<>();
         for(PetsInfo petsInfo : list) {
-            response.add(PetsInfoUtils.petsInfoToProductResponse(petsInfo));
+            response.add(PetsInfoFacade.petsInfoToProductResponse(petsInfo));
         }
         return response;
     }
 
     public PetDtoResponse findPetByProductIdResponse(Long id) {
-        return PetsInfoUtils.petsInfoToProductResponse(findPetByProductId(id));
+        return PetsInfoFacade.petsInfoToProductResponse(findPetByProductId(id));
     }
 
     public PetsInfo findPetByProductId(Long id) {
@@ -72,10 +69,10 @@ public class PetService {
         PetsInfo pet = findPetByProductId(id);
 
         Product product = pet.getProduct();
-        ProductUtils.ProductDtoToProduct(request, product);
+        ProductFacade.ProductDtoToProduct(request, product);
         setCategoryToProduct(request.getCategoryId(), product);
-        PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
-        Image image = ProductUtils.setImageToProduct(product, request.getImage());
+        PetsInfoFacade.ProductDtoToPetsInfo(request, pet);
+        Image image = ProductFacade.setImageToProduct(product, request.getImage());
         pet.setProduct(product);
         Product save = productRepository.save(product);
         if (image != null) {
@@ -100,11 +97,11 @@ public class PetService {
     public PetsInfo addPet(CreatePetDtoRequest request) {
         PetsInfo pet = new PetsInfo();
         Product product = new Product();
-        PetsInfoUtils.ProductDtoToPetsInfo(request, pet);
+        PetsInfoFacade.ProductDtoToPetsInfo(request, pet);
         Category category = getCategoryById(request.getCategoryId());
         product.setCategory(category);
-        ProductUtils.ProductDtoToProduct(request, product);
-        Image image = ProductUtils.setImageToProduct(product, request.getImage());
+        ProductFacade.ProductDtoToProduct(request, product);
+        Image image = ProductFacade.setImageToProduct(product, request.getImage());
         Product savedProduct = productRepository.save(product);
         image.setProduct(savedProduct);
         imageService.editImage(image);
@@ -124,7 +121,7 @@ public class PetService {
     public List<PetDtoResponse> getAllPetsByCategoryIdResponse(Long id) {
         return getAllPetsByCategoryId(id)
                 .stream()
-                .map(PetsInfoUtils::petsInfoToProductResponse)
+                .map(PetsInfoFacade::petsInfoToProductResponse)
                 .collect(Collectors.toList());
     }
 }

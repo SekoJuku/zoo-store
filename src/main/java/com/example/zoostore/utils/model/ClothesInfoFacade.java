@@ -4,7 +4,7 @@ import com.example.zoostore.dto.request.ClothesDtoRequest;
 import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.model.ClothesInfo;
 
-public class ClothesInfoUtil {
+public class ClothesInfoFacade {
     public static ClothesDtoResponse clothesInfoToProductResponse(ClothesInfo clothesInfo) {
         return new ClothesDtoResponse(
                 clothesInfo.getProduct().getId(),

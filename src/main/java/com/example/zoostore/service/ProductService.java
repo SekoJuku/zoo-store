@@ -8,14 +8,10 @@ import com.example.zoostore.model.Image;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.ProductRepository;
-import com.example.zoostore.utils.ImageUtils;
-import com.example.zoostore.utils.model.ImageFacade;
-import com.example.zoostore.utils.model.ProductUtils;
+import com.example.zoostore.utils.model.ProductFacade;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,7 +62,7 @@ public class ProductService {
                 .price(request.getPrice())
                 .quantity(request.getQuantity())
                 .build();
-        Image image = ProductUtils.setImageToProduct(product, request.getImage());
+        Image image = ProductFacade.setImageToProduct(product, request.getImage());
 
         log.info(image.getName());
 
@@ -89,9 +85,9 @@ public class ProductService {
 
         Product product = getProductById(id);
 
-        ProductUtils.ProductDtoToProduct(request, product);
+        ProductFacade.ProductDtoToProduct(request, product);
 
-        Image image = ProductUtils.setImageToProduct(product, request.getImage());
+        Image image = ProductFacade.setImageToProduct(product, request.getImage());
 
         Product save = productRepository.save(product);
 
@@ -116,7 +112,10 @@ public class ProductService {
     }
 
     private boolean isValidCategory(Category category) {
-
         return category.getSuperCategory().getId() == 3;
+    }
+
+    public void updateProduct(Product product) {
+        productRepository.save(product);
     }
 }

@@ -91,7 +91,6 @@ public class AuthService {
         if (Strings.isBlank(dto.getEmail())) {
             throw new BadRequestException("Email is blank");
         }
-
         Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
         if (optionalUser.isPresent()) {
             throw new BadRequestException("User with this email is exists");
@@ -102,7 +101,6 @@ public class AuthService {
         if (!PasswordUtil.isValidPassword(dto.getPassword())) {
             throw new BadRequestException("Invalid password");
         }
-
 
         Role role;
         if (dto.getRoleId() == null) {

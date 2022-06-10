@@ -5,7 +5,7 @@ import com.example.oauth2.security.JWTTokenProvider;
 import com.example.oauth2.service.UserService;
 import com.example.oauth2.util.HttpUtils;
 import com.example.zoostore.dto.request.ProfileDetailsDtoRequest;
-import com.example.zoostore.utils.model.CustomerUtils;
+import com.example.zoostore.utils.model.CustomerFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class ProfileService {
     public User edit(ProfileDetailsDtoRequest request) {
         Long userId = getUserId();
         User user = userService.getUserById(userId);
-        CustomerUtils.CustomerDtoToUser(request,user);
+        CustomerFacade.CustomerDtoToUser(request,user);
         return userService.save(user);
     }
 
@@ -41,7 +41,7 @@ public class ProfileService {
         }
     }
 
-    private Long getUserId() {
+    public Long getUserId() {
         String jwt = HttpUtils.getJWT();
         Long userId = Long.valueOf(jwtTokenProvider.getSubject(jwt));
         return userId;

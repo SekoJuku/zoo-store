@@ -26,8 +26,8 @@ public class SecurityConstants {
 
         public static final String[] NON_AUTHENTICATED = {
             "/login",
-            "/api/v*/auth/**",
-            "/api/v*/test/oauth"
+            "/api/v*/auth",
+            "/api/v*/auth/**"
         };
 
         public static final String[] USER = {

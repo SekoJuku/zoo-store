@@ -1,12 +1,10 @@
 package com.example.zoostore.model;
 
 import com.example.oauth2.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "orders")
@@ -14,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +20,8 @@ public class Order {
 
     @ManyToOne
     private User user;
+
+    private BigDecimal total;
 
     private boolean isPaid;
 }

@@ -6,7 +6,7 @@ import com.example.zoostore.model.Product;
 import lombok.SneakyThrows;
 import org.springframework.web.multipart.MultipartFile;
 
-public class ProductUtils {
+public class ProductFacade {
     @SneakyThrows
     public static void ProductDtoToProduct(ProductDtoRequest request, Product product) {
         product.setName(request.getName() != null ? request.getName() : product.getName());

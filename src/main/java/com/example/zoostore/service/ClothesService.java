@@ -10,9 +10,9 @@ import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.ClothesInfoRepository;
 import com.example.zoostore.repository.ProductRepository;
-import com.example.zoostore.utils.model.ClothesInfoUtil;
+import com.example.zoostore.utils.model.ClothesInfoFacade;
 import com.example.zoostore.utils.model.ImageFacade;
-import com.example.zoostore.utils.model.ProductUtils;
+import com.example.zoostore.utils.model.ProductFacade;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class ClothesService {
         List<ClothesInfo> list = getAllClothes();
         List<ClothesDtoResponse> response = new ArrayList<>();
         for(ClothesInfo clothesInfo : list) {
-            response.add(ClothesInfoUtil.clothesInfoToProductResponse(clothesInfo));
+            response.add(ClothesInfoFacade.clothesInfoToProductResponse(clothesInfo));
         }
         return response;
     }
@@ -50,7 +50,7 @@ public class ClothesService {
     }
 
     public ClothesDtoResponse getByProductIdResponse(Long id) {
-        return ClothesInfoUtil.clothesInfoToProductResponse(getByProductId(id));
+        return ClothesInfoFacade.clothesInfoToProductResponse(getByProductId(id));
     }
 
     public ClothesInfo getByProductId(Long id) {
@@ -74,7 +74,7 @@ public class ClothesService {
                 .description(request.getDescription())
                 .build();
 
-        Image image = ProductUtils.setImageToProduct(product, request.getImage());
+        Image image = ProductFacade.setImageToProduct(product, request.getImage());
 
         return saveImageAndReturnClothesInfo(request, product, image);
     }
@@ -93,7 +93,7 @@ public class ClothesService {
 
         Product product = productService.getProductById(id);
 
-        ProductUtils.ProductDtoToProduct(request, product);
+        ProductFacade.ProductDtoToProduct(request, product);
 
         Image image = ImageFacade.setImageIfNeeded(product, request.getImage());
 
@@ -129,7 +129,7 @@ public class ClothesService {
     public List<ClothesDtoResponse> getAllClothesByCategoryIdResponse(Long id) {
         return getAllClothesByCategoryId(id)
                 .stream()
-                .map(ClothesInfoUtil::clothesInfoToProductResponse)
+                .map(ClothesInfoFacade::clothesInfoToProductResponse)
                 .collect(Collectors.toList());
     }
 }

@@ -1,9 +1,7 @@
 package com.example.zoostore.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,7 +11,8 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderProducts {
+@Builder
+public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,5 +20,9 @@ public class OrderProducts {
     @ManyToOne
     private Product product;
 
-    private Integer amount;
+    @ManyToOne
+    @JsonIgnore
+    private Order order;
+
+    private Integer quantity;
 }
