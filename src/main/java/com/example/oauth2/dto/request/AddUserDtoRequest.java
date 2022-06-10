@@ -11,7 +11,13 @@ public class AddUserDtoRequest {
     private String rePassword;
     private Long roleId;
 
+    private String token;
+
     public AddUserDtoRequest(String email) {
         this.email = email;
+    }
+    public AddUserDtoRequest(String email, String token) {
+        this.email = email;
+        this.token = token;
     }
 }

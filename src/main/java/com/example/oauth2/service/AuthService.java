@@ -56,7 +56,7 @@ public class AuthService {
 
     public void confirmRegistration(String token, String email) {
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.findByTokenAndUser_Email(token, email)
-            .orElseThrow(() -> new NotFoundException("Invalid token"));
+                .orElseThrow(() -> new NotFoundException("Invalid token"));
         if (registrationConfirmation.getCreatedDate().plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() <= System.currentTimeMillis()) {
             throw new BadRequestException("Token is expired");
         }
@@ -70,7 +70,7 @@ public class AuthService {
     }
 
     public void registration(UserRegistrationDtoRequest dto) {
-        AddUserDtoRequest addUserDtoRequest = new AddUserDtoRequest(dto.getEmail(), dto.getPassword(), dto.getRePassword(), null);
+        AddUserDtoRequest addUserDtoRequest = new AddUserDtoRequest(dto.getEmail(), dto.getPassword(), dto.getRePassword(), null, null);
         registration(addUserDtoRequest);
     }
 
@@ -81,9 +81,9 @@ public class AuthService {
         register(dto, LOCAL_AUTH_PROVIDER);
     }
 
-    public void registrationUserByOAuth(String email, String authProviderName) {
+    public void registrationUserByOAuth(String email, String authProviderName, String token) {
         if (!userRepository.existsByEmailAndAuthProvider_Name(email, authProviderName)) {
-            register(new AddUserDtoRequest(email), authProviderName);
+            register(new AddUserDtoRequest(email, token), authProviderName);
         }
     }
 
@@ -105,10 +105,10 @@ public class AuthService {
         Role role;
         if (dto.getRoleId() == null) {
             role = roleRepository.findByName(SecurityConstants.ROLES.USER)
-                .orElseThrow(() -> new NotFoundException("RoleId is null and role USER is not found"));
+                    .orElseThrow(() -> new NotFoundException("RoleId is null and role USER is not found"));
         } else {
             role = roleRepository.findById(dto.getRoleId())
-                .orElseThrow(() -> new NotFoundException("Role", "id"));
+                    .orElseThrow(() -> new NotFoundException("Role", "id"));
         }
 
         AuthProvider authProvider = getAuthProviderByName(authProviderName);
@@ -119,15 +119,17 @@ public class AuthService {
 
         if (optionalUser.isEmpty()) {
             user = User.builder()
-                .email(dto.getEmail())
-                .password(password)
-                .role(role)
-                .authProvider(authProvider)
-                .registrationConfirmed(!authProviderName.equals(LOCAL_AUTH_PROVIDER))
-                .build();
+                    .email(dto.getEmail())
+                    .token(dto.getToken())
+                    .password(password)
+                    .role(role)
+                    .authProvider(authProvider)
+                    .registrationConfirmed(!authProviderName.equals(LOCAL_AUTH_PROVIDER))
+                    .build();
         } else {
             user = optionalUser.get();
             user.setPassword(password);
+            user.setToken(dto.getToken());
             user.setRole(role);
             user.setAuthProvider(authProvider);
         }
@@ -158,7 +160,7 @@ public class AuthService {
 
     private AuthProvider getAuthProviderByName(String authProviderName) {
         return authProviderRepository.findByName(authProviderName.toLowerCase())
-            .orElseThrow(() -> new NotFoundException("AuthProvider", "name"));
+                .orElseThrow(() -> new NotFoundException("AuthProvider", "name"));
     }
 
     public ResponseEntity<?> auth(String username, String password) {
