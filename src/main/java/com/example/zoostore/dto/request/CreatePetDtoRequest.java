@@ -22,7 +22,6 @@ public class CreatePetDtoRequest extends ProductDtoRequest {
 
     private String ownerNumber;
 
-    private MultipartFile image;
 
 
     private String breed;

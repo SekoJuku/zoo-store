@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 public class ClothesDtoRequest extends ProductDtoRequest {
-    private MultipartFile image;
 
     private String size;
 

@@ -31,12 +31,12 @@ public class ClothesController {
     }
 
     @PostMapping()
-    public ClothesDtoResponse addClothes(@ModelAttribute ClothesDtoRequest request) {
+    public ClothesDtoResponse addClothes(@RequestBody ClothesDtoRequest request) {
         return ClothesInfoFacade.clothesInfoToProductResponse(clothesService.addClothes(request));
     }
 
     @PutMapping("/{id}")
-    public ClothesDtoResponse updateClothes(@PathVariable Long id, @ModelAttribute ClothesDtoRequest request) {
+    public ClothesDtoResponse updateClothes(@PathVariable Long id, @RequestBody ClothesDtoRequest request) {
         return ClothesInfoFacade.clothesInfoToProductResponse(clothesService.updateClothes(request, id));
     }
 

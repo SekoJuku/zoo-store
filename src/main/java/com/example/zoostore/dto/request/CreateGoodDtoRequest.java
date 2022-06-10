@@ -7,6 +7,4 @@ import org.springframework.web.multipart.MultipartFile;
 public class CreateGoodDtoRequest extends ProductDtoRequest {
 
     private Long categoryId;
-
-    private MultipartFile image;
 }

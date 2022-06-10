@@ -1,10 +1,8 @@
 package com.example.zoostore.utils.model;
 
 import com.example.zoostore.dto.request.ProductDtoRequest;
-import com.example.zoostore.model.Image;
 import com.example.zoostore.model.Product;
 import lombok.SneakyThrows;
-import org.springframework.web.multipart.MultipartFile;
 
 public class ProductFacade {
     @SneakyThrows
@@ -13,10 +11,7 @@ public class ProductFacade {
         product.setQuantity(request.getQuantity() != null ? request.getQuantity() : product.getQuantity());
         product.setDescription(request.getDescription() != null ? request.getDescription() :product.getDescription());
         product.setPrice(request.getPrice() != null ? request.getPrice() : product.getPrice());
+        product.setImage(request.getImage() != null ? request.getImage() : product.getImage());
     }
 
-    @SneakyThrows
-    public static Image setImageToProduct(Product product, MultipartFile file) {
-        return ImageFacade.setImageIfNeeded(product, file);
-    }
 }

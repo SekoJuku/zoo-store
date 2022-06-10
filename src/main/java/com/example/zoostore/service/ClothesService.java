@@ -5,13 +5,11 @@ import com.example.zoostore.dto.request.ClothesDtoRequest;
 import com.example.zoostore.dto.response.ClothesDtoResponse;
 import com.example.zoostore.model.Category;
 import com.example.zoostore.model.ClothesInfo;
-import com.example.zoostore.model.Image;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.ClothesInfoRepository;
 import com.example.zoostore.repository.ProductRepository;
 import com.example.zoostore.utils.model.ClothesInfoFacade;
-import com.example.zoostore.utils.model.ImageFacade;
 import com.example.zoostore.utils.model.ProductFacade;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,7 +28,6 @@ public class ClothesService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductService productService;
-    private ImageService imageService;
 
     public List<ClothesInfo> getAllClothes() {
         return clothesInfoRepository.getAllClothes();
@@ -73,11 +70,10 @@ public class ClothesService {
                 .price(request.getPrice())
                 .quantity(request.getQuantity())
                 .description(request.getDescription())
+                .image(request.getImage())
                 .build();
 
-        Image image = ProductFacade.setImageToProduct(product, request.getImage());
-
-        return saveImageAndReturnClothesInfo(request, product, image);
+        return saveImageAndReturnClothesInfo(request, product);
     }
 
     private boolean verify(Category category) {
@@ -96,22 +92,16 @@ public class ClothesService {
 
         ProductFacade.ProductDtoToProduct(request, product);
 
-        Image image = ImageFacade.setImageIfNeeded(product, request.getImage());
-
-        return saveImageAndReturnClothesInfo(request, product, image);
+        return saveImageAndReturnClothesInfo(request, product);
     }
 
-    private ClothesInfo saveImageAndReturnClothesInfo(ClothesDtoRequest request, Product product, Image image) {
+    private ClothesInfo saveImageAndReturnClothesInfo(ClothesDtoRequest request, Product product) {
         ClothesInfo clothesInfo = ClothesInfo.builder()
                 .product(product)
                 .size(request.getSize())
                 .build();
 
         Product save = productRepository.save(product);
-        if (image != null) {
-            image.setProduct(save);
-            imageService.editImage(image);
-        }
         clothesInfoRepository.save(clothesInfo);
 
         return clothesInfo;

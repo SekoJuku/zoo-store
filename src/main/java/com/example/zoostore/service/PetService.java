@@ -5,7 +5,6 @@ import com.example.exception.domain.NotFoundException;
 import com.example.zoostore.dto.request.CreatePetDtoRequest;
 import com.example.zoostore.dto.response.PetDtoResponse;
 import com.example.zoostore.model.Category;
-import com.example.zoostore.model.Image;
 import com.example.zoostore.model.PetsInfo;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
@@ -31,7 +30,6 @@ public class PetService {
     private final PetsInfoRepository petsInfoRepository;
     private final CategoryRepository categoryRepository;
 
-    private final ImageService imageService;
 
 
     public List<PetsInfo> getAllPets() {
@@ -72,13 +70,8 @@ public class PetService {
         ProductFacade.ProductDtoToProduct(request, product);
         setCategoryToProduct(request.getCategoryId(), product);
         PetsInfoFacade.ProductDtoToPetsInfo(request, pet);
-        Image image = ProductFacade.setImageToProduct(product, request.getImage());
         pet.setProduct(product);
         Product save = productRepository.save(product);
-        if (image != null) {
-            image.setProduct(save);
-            imageService.editImage(image);
-        }
         return petsInfoRepository.save(pet);
     }
 
@@ -101,10 +94,7 @@ public class PetService {
         Category category = getCategoryById(request.getCategoryId());
         product.setCategory(category);
         ProductFacade.ProductDtoToProduct(request, product);
-        Image image = ProductFacade.setImageToProduct(product, request.getImage());
         Product savedProduct = productRepository.save(product);
-        image.setProduct(savedProduct);
-        imageService.editImage(image);
         pet.setProduct(savedProduct);
         return petsInfoRepository.save(pet);
     }

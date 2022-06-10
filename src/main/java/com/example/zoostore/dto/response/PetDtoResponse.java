@@ -1,11 +1,8 @@
 package com.example.zoostore.dto.response;
 
-import com.example.zoostore.model.Category;
-import com.example.zoostore.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
 @Data

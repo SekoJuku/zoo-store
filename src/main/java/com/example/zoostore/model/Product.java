@@ -27,9 +27,9 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToOne(targetEntity = Image.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
-    private Image image;
+//    @OneToOne(targetEntity = Image.class, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private String image;
 
     private Integer quantity;
 

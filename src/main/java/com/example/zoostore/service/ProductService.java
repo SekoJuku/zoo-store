@@ -4,7 +4,6 @@ import com.example.exception.domain.BadRequestException;
 import com.example.exception.domain.NotFoundException;
 import com.example.zoostore.dto.request.CreateGoodDtoRequest;
 import com.example.zoostore.model.Category;
-import com.example.zoostore.model.Image;
 import com.example.zoostore.model.Product;
 import com.example.zoostore.repository.CategoryRepository;
 import com.example.zoostore.repository.ProductRepository;
@@ -22,7 +21,6 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private ImageService imageService;
 
     public List<Product> getProducts() {
         return productRepository.getProducts();
@@ -61,17 +59,11 @@ public class ProductService {
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .quantity(request.getQuantity())
+                .image(request.getImage())
                 .build();
-        Image image = ProductFacade.setImageToProduct(product, request.getImage());
 
-        log.info(image.getName());
 
         Product save = productRepository.save(product);
-        
-        if (image != null) {
-            image.setProduct(save);
-            imageService.editImage(image);
-        }
 
         return product;
     }
@@ -87,14 +79,7 @@ public class ProductService {
 
         ProductFacade.ProductDtoToProduct(request, product);
 
-        Image image = ProductFacade.setImageToProduct(product, request.getImage());
-
         Product save = productRepository.save(product);
-
-        if (image != null) {
-            image.setProduct(save);
-            imageService.editImage(image);
-        }
 
         return product;
     }
