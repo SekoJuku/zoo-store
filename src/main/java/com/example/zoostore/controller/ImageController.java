@@ -3,6 +3,8 @@ package com.example.zoostore.controller;
 
 import com.example.zoostore.model.Image;
 import com.example.zoostore.service.ImageService;
+import com.example.zoostore.utils.ImageUtils;
+import com.example.zoostore.utils.model.ImageFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,6 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, image.getContentType())
                 .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", image.getName()+"."+image.getExtension()))
-                .body(image.getData());
+                .body(ImageUtils.decompressImage(image.getData()));
     }
 }
