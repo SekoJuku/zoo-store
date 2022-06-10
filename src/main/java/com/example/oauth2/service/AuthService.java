@@ -96,7 +96,7 @@ public class AuthService {
         if (optionalUser.isPresent()) {
             throw new BadRequestException("User with this email is exists");
         }
-        if (authProviderName.equals("local")) {
+        if (authProviderName.equals(LOCAL_AUTH_PROVIDER)) {
             if (!dto.getPassword().equals(dto.getRePassword())) {
                 throw new BadRequestException("Passwords are not equal");
             }

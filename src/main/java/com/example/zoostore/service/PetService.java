@@ -72,6 +72,7 @@ public class PetService {
         PetsInfoFacade.ProductDtoToPetsInfo(request, pet);
         pet.setProduct(product);
         Product save = productRepository.save(product);
+        pet.setProduct(save);
         return petsInfoRepository.save(pet);
     }
 

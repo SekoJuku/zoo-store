@@ -21,17 +21,18 @@ public class SecurityConstants {
 
     public static final class PUBLIC_URLS {
         public static final String[] PUBLIC = {
-            "/api/v1/**",
+                "/api/v1/**",
         };
 
         public static final String[] NON_AUTHENTICATED = {
-            "/login",
-            "/api/v*/auth",
-            "/api/v*/auth/**"
+                "/login",
+                "/api/v*/auth",
+                "/api/v*/auth/**"
         };
 
         public static final String[] USER = {
-            "/api/v*/profile/**"
+                "/api/v*/profile/**",
+                "/api/v*/order/**"
         };
 
 //        public static final String[] SWAGGER = {
@@ -49,7 +50,7 @@ public class SecurityConstants {
 
         public static boolean contains(String url) {
             return Arrays.asList(PUBLIC).contains(url)
-                || Arrays.asList(NON_AUTHENTICATED).contains(url);
+                    || Arrays.asList(NON_AUTHENTICATED).contains(url);
         }
     }
 }

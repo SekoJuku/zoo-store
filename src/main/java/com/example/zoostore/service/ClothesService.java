@@ -102,6 +102,7 @@ public class ClothesService {
                 .build();
 
         Product save = productRepository.save(product);
+        clothesInfo.setProduct(save);
         clothesInfoRepository.save(clothesInfo);
 
         return clothesInfo;
