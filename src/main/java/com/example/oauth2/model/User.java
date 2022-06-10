@@ -56,6 +56,8 @@ public class User {
     @Column(columnDefinition = "boolean default false")
     private Boolean locked;
 
+    private String token;
+
     private String gender;
 
     private String firstName;

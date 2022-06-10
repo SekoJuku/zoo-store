@@ -187,4 +187,8 @@ public class AuthService {
         mailSenderService.sendEmail("Reset your password", String.format("Code: %s", i), email);
         userService.save(user);
     }
+
+    public String getTokenFromOauth2(String email) {
+        return userService.userByEmailAndProvider(email).getToken();
+    }
 }

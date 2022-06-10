@@ -4,6 +4,7 @@ import com.example.oauth2.environment.JWTEnvironmentBuilder;
 import com.example.exception.domain.BadRequestException;
 import com.example.exception.domain.NotFoundException;
 import com.example.exception.domain.UnauthorizedException;
+import com.example.oauth2.model.User;
 import com.example.oauth2.service.AuthService;
 import com.example.oauth2.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableGlobalMethodSecurity(
-    prePostEnabled = true,
-    securedEnabled = true,
-    jsr250Enabled = true)
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthService authService;
@@ -39,20 +40,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .cors()
-            .and()
+                .csrf().disable()
+                .cors()
+                .and()
 
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
 
-            .authorizeRequests()
-            .antMatchers(SecurityConstants.PUBLIC_URLS.PUBLIC).permitAll()
-            .antMatchers(SecurityConstants.PUBLIC_URLS.NON_AUTHENTICATED).not().authenticated()
-            .antMatchers(SecurityConstants.PUBLIC_URLS.USER).hasRole("USER_ROLE")
-            .anyRequest().authenticated()
-            .and()
+                .authorizeRequests()
+                .antMatchers(SecurityConstants.PUBLIC_URLS.PUBLIC).permitAll()
+                .antMatchers(SecurityConstants.PUBLIC_URLS.NON_AUTHENTICATED).not().authenticated()
+                .antMatchers(SecurityConstants.PUBLIC_URLS.USER).hasRole("USER_ROLE")
+                .anyRequest().authenticated()
+                .and()
 
 //            .formLogin()
 //            .usernameParameter("email")
@@ -64,12 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //            .and()
 
-            .oauth2Login()
-            .successHandler(oAuth2AuthenticationSuccessHandler())
+                .oauth2Login()
+                .successHandler(oAuth2AuthenticationSuccessHandler())
 
-            .and()
-            .addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtEnvironmentBuilder, jwtTokenProvider))
-            .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtEnvironmentBuilder, jwtTokenProvider))
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -101,7 +102,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
     private AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
         return (request, response, authentication) -> {
             CustomOAuth2User user = (CustomOAuth2User) authentication.getPrincipal();
@@ -109,6 +109,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             try {
                 authService.registrationUserByOAuth(user.getName(), authProviderName);
                 String token = jwtTokenProvider.generateToken(user.getName(), request);
+                User user1 = userService.userByEmailAndProvider(user.getName());
+                user1.setToken(token);
+                userService.save(user1);
                 response.setHeader(jwtEnvironmentBuilder.getJWT_TOKEN_HEADER(), token);
             } catch (BadRequestException e) {
                 response.setStatus(HttpStatus.BAD_REQUEST.value());

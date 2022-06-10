@@ -49,6 +49,11 @@ public class AuthController {
         return authService.auth(request.getEmail(), request.getPassword());
     }
 
+    @GetMapping("/{email}")
+    public String getTokenFromOauth2(@PathVariable String email) {
+        return authService.getTokenFromOauth2(email);
+    }
+
     @PostMapping("/registration")
     public ResponseEntity<HttpStatus> register(@RequestBody UserRegistrationDtoRequest dto) {
         authService.registration(dto);
