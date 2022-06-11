@@ -37,7 +37,7 @@ public class OrderController {
     }
 
     // pay for order
-    @PostMapping("/pay/{id}")
+    @GetMapping("/pay/{id}")
     public HttpStatus payForOrder(@PathVariable("id") Long id) {
         return orderService.payForOrder(id);
     }
