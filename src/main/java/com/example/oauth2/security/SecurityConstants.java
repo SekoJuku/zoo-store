@@ -15,7 +15,7 @@ public class SecurityConstants {
     public static class JWT {
         public static final String TOKEN_PREFIX = "Bearer ";
         public static final String SECRET = "89juw2HGSAbw72scD2SSw2!nAdnTwjOI64Se32Cr3t";
-        public static final Long EXPIRATION_TIME = (long) (60 * 60 * 1000); // 60 minutes
+        public static final Long EXPIRATION_TIME = (long) (7*24*60 * 60 * 1000); // 60 minutes
         public static final String CLIENT_IP = "Client ip";
     }
 

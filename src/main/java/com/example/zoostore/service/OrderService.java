@@ -38,7 +38,7 @@ public class OrderService {
 
 
     @Transactional(rollbackFor = {RuntimeException.class})
-    public HttpStatus createOrder(CreateOrderDtoRequest request) {
+    public Order createOrder(CreateOrderDtoRequest request) {
         final BigDecimal[] totalPrice = {new BigDecimal(0)};
         Payment payment = PaymentFacade.paymentDtoRequestToPayment(request);
         User user = userService.getUserById(profileService.getUserId());
@@ -64,7 +64,7 @@ public class OrderService {
         payment.setOrder(order);
         payment.setStatus(Status.ACTIVE);
         paymentRepository.save(payment);
-        return HttpStatus.OK;
+        return order;
     }
 
     public List<OrderDtoResponse> getAllOrders() {

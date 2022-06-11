@@ -10,6 +10,7 @@ import com.example.zoostore.model.Payment;
 import com.example.zoostore.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class OrderController {
 
 
     @PostMapping("/create")
-    public HttpStatus createOrder(@RequestBody CreateOrderDtoRequest request) {
-        return orderService.createOrder(request);
+    public ResponseEntity<?> createOrder(@RequestBody CreateOrderDtoRequest request) {
+        return ResponseEntity.ok(orderService.createOrder(request).getId());
     }
 
     @GetMapping
