@@ -1,5 +1,6 @@
 package com.example.zoostore.service;
 
+import com.example.oauth2.mailsender.MailSenderService;
 import com.example.oauth2.model.User;
 import com.example.oauth2.service.UserService;
 import com.example.zoostore.dto.request.CreateOrderDtoRequest;
@@ -32,6 +33,8 @@ public class OrderService {
     private final ProductService productService;
     private final ProfileService profileService;
     private final UserService userService;
+
+    private final MailSenderService mailSenderService;
 
 
     @Transactional(rollbackFor = {RuntimeException.class})
@@ -108,6 +111,7 @@ public class OrderService {
         payment.setStatus(Status.DONE);
         order.setPaid(true);
         paymentRepository.save(payment);
+        mailSenderService.sendEmail("Order Submission","You've completed your order! Wait for our employee to contact you!",order.getUser().getEmail());
         return HttpStatus.OK;
     }
 }
