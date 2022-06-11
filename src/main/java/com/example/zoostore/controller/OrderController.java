@@ -24,7 +24,7 @@ public class OrderController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrderDtoRequest request) {
-        return ResponseEntity.ok(orderService.createOrder(request).getId());
+        return ResponseEntity.ok(orderService.createOrder(request));
     }
 
     @GetMapping
